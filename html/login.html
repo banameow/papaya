@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Papaya – Login Page | ITCS223 Phase II -->
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Papaya – Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div class="d-flex" style="min-height:100vh">
+
+  <!-- Left: Brand panel -->
+  <aside class="login-brand d-none d-md-flex flex-column align-items-center justify-content-center px-5 text-center"
+    style="flex:0 0 42%">
+    <a href="index.html" class="papaya-logo text-dark text-decoration-none mb-3">&#9700;apaya</a>
+    <p class="text-muted" style="font-size:.95rem;line-height:1.8">
+      All Your IT Needs in One Place<br>Premium Quality, Unbeatable Prices
+    </p>
+    <nav class="d-flex gap-3 mt-3">
+      <a href="index.html"   class="text-muted text-decoration-none small">Home</a>
+      <a href="products.html" class="text-muted text-decoration-none small">Products</a>
+      <a href="team.html"    class="text-muted text-decoration-none small">Team</a>
+    </nav>
+  </aside>
+
+  <!-- Right: Form -->
+  <main class="flex-grow-1 d-flex flex-column align-items-center justify-content-center px-4 px-md-5">
+    <div style="width:100%;max-width:420px">
+
+      <h1 class="fw-bold mb-1" style="font-size:2.2rem">Welcome Back</h1>
+      <p class="text-muted mb-4" style="font-size:.9rem">Back for More Tech? We've Missed You.</p>
+
+      <form id="loginForm" novalidate>
+
+        <div class="mb-3">
+          <label for="username" class="form-label fw-semibold">Username</label>
+          <input type="text" id="username" name="username"
+            class="form-control form-control-lg rounded-pill bg-dark text-white border-0"
+            placeholder="exampleuser" style="--bs-form-control-bg:#212529" autocomplete="username" required/>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label fw-semibold">Password</label>
+          <input type="password" id="password" name="password"
+            class="form-control form-control-lg rounded-pill bg-dark text-white border-0"
+            placeholder="••••••••" autocomplete="current-password" required/>
+        </div>
+
+        <div id="loginError" class="text-danger mb-3 small d-none">
+          Invalid username or password. Please try again.
+        </div>
+
+        <button type="submit" class="btn btn-outline-dark w-100 rounded-pill py-2 fw-semibold mb-3">
+          Log in
+        </button>
+
+      </form>
+
+      <p class="text-center text-muted small">
+        New Member?
+        <a href="sign-up.html" class="text-dark fw-bold">Sign up</a>
+      </p>
+    </div>
+  </main>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  /* Login handler – Phase II: replace with fetch POST to /api/auth/login */
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    if (u === 'admin' && p === 'admin123') {
+      sessionStorage.setItem('papaya_user', u);
+      sessionStorage.setItem('papaya_role', 'admin');
+      window.location.href = 'product-management.html';
+    } else {
+      document.getElementById('loginError').classList.remove('d-none');
+    }
+  });
+</script>
+</body>
+</html>

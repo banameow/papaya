@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Papaya – Product Detail | ITCS223 Phase II
+       Template: reads ?id= param; Phase II fetches from /api/products/:id -->
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Papaya – Product Detail</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+<!-- ══ HEADER ════════════════════════════════════════════════════ -->
+<header class="papaya-topbar bg-white border-bottom">
+  <div class="d-flex align-items-center justify-content-between px-4 py-2 border-bottom">
+    <a href="index.html" class="papaya-logo text-dark text-decoration-none">&#9700;apaya</a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="search.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+        <i class="bi bi-search me-1"></i>search
+      </a>
+      <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+        <i class="bi bi-person-circle me-1"></i>User
+      </a>
+      <a href="cart.html" class="text-dark fs-5"><i class="bi bi-cart3"></i></a>
+    </div>
+  </div>
+  <nav class="papaya-nav d-flex align-items-center px-3">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="products.html" class="nav-link">Products</a>
+    <a href="team.html" class="nav-link">Team</a>
+    <a href="login.html" class="nav-link ms-auto text-secondary small">
+      <i class="bi bi-lock-fill me-1"></i>Admin
+    </a>
+  </nav>
+</header>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════ -->
+<main class="container-fluid px-4 px-md-5 py-4">
+
+  <!-- Back link -->
+  <a href="search.html" class="d-inline-flex align-items-center gap-1 text-muted text-decoration-none small mb-4">
+    <i class="bi bi-arrow-left"></i> Back to Search Results
+  </a>
+
+  <div class="row g-5">
+
+    <!-- Left: Image gallery -->
+    <div class="col-12 col-md-5">
+      <img id="mainImage"
+        src="https://placehold.co/500x400/f4f4f5/71717a?text=Product+Image"
+        alt="Product" class="w-100 rounded-4 bg-light p-4 mb-3"
+        style="aspect-ratio:4/3;object-fit:contain"/>
+      <div class="row g-2">
+        <div class="col-4">
+          <img src="https://placehold.co/150x150/f4f4f5/71717a?text=View+1"
+            alt="View 1" class="w-100 rounded-3 bg-light p-2 border"
+            style="aspect-ratio:1;object-fit:contain;cursor:pointer"
+            onclick="switchImage(this)"/>
+        </div>
+        <div class="col-4">
+          <img src="https://placehold.co/150x150/f4f4f5/71717a?text=View+2"
+            alt="View 2" class="w-100 rounded-3 bg-light p-2 border"
+            style="aspect-ratio:1;object-fit:contain;cursor:pointer"
+            onclick="switchImage(this)"/>
+        </div>
+        <div class="col-4">
+          <img src="https://placehold.co/150x150/f4f4f5/71717a?text=View+3"
+            alt="View 3" class="w-100 rounded-3 bg-light p-2 border"
+            style="aspect-ratio:1;object-fit:contain;cursor:pointer"
+            onclick="switchImage(this)"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Product info -->
+    <div class="col-12 col-md-7">
+      <h1 class="fw-bold mb-2" id="productName">MSI Vector 16 HX AI A2XWIG-078TH Cosmos Gray</h1>
+
+      <div class="d-flex align-items-baseline gap-2">
+        <span class="text-price fw-bold" id="productPrice" style="font-size:2rem">84,990</span>
+        <span class="text-muted text-decoration-line-through" id="productOldPrice">89,990</span>
+      </div>
+      <p class="text-muted small mb-3" id="productSave">save 5,000</p>
+
+      <!-- Quantity -->
+      <div class="qty-control border rounded-pill overflow-hidden mb-4">
+        <button class="qty-btn qty-minus">−</button>
+        <input class="qty-val" type="number" value="1" min="1" readonly aria-label="Quantity"/>
+        <button class="qty-btn qty-plus">+</button>
+      </div>
+
+      <!-- Spec table -->
+      <article>
+        <table class="spec-table w-100">
+          <tbody>
+            <tr><td>Screen Size</td><td>16.0 inch</td></tr>
+            <tr><td>Processor</td><td>Intel Core Ultra 9</td></tr>
+            <tr><td>Processor Speed</td><td>Intel Core Ultra 9 275HX, up to 5.4GHz, 24C(8P+16E)/24T, 36MB</td></tr>
+            <tr><td>Display</td><td>QHD+ 2560×1600 @240Hz, IPS, 16:10, 100% DCI-P3</td></tr>
+            <tr><td>Memory</td><td>16GB</td></tr>
+            <tr><td>Storage</td><td>1TB SSD M.2</td></tr>
+            <tr><td>Graphics</td><td>NVIDIA GeForce RTX 5080 Laptop</td></tr>
+            <tr><td>Operating System</td><td>Windows 11 Home</td></tr>
+            <tr><td>Camera</td><td>HD type (30fps@720p)</td></tr>
+            <tr><td>Optical Drive</td><td>N/A</td></tr>
+            <tr><td>Connection ports</td><td>2× Thunderbolt 5, 2× USB3.2, 1× HDMI v2.1, 1× RJ45</td></tr>
+            <tr><td>Wireless Wi-Fi</td><td>7 + Bluetooth v5.4</td></tr>
+            <tr><td>Battery</td><td>90Wh, 4-Cell</td></tr>
+            <tr><td>Color</td><td>Cosmos Gray</td></tr>
+            <tr><td>Dimensions W×D×H</td><td>35.7 × 28.4 × 2.2 cm</td></tr>
+            <tr><td>Weight</td><td>2.7 Kg</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <button class="btn btn-dark w-100 rounded-3 py-3 fw-semibold mt-4" onclick="addToCart()">
+        <i class="bi bi-cart3 me-2"></i>ADD TO CART
+      </button>
+      <div id="cartSuccess" class="text-success text-center small mt-2 d-none">
+        <i class="bi bi-check-circle-fill me-1"></i>Added to cart!
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+<footer class="border-top mt-5 py-4 px-4 px-md-5">
+  <div class="row g-4">
+    <div class="col-12 col-md-3">
+      <div class="papaya-logo mb-2">&#9700;apaya</div>
+      <div class="text-muted" style="font-size:.82rem;line-height:1.8">Address: 123 IT Street, Salaya<br>Email: hello@papaya.tech</div>
+    </div>
+    <div class="col-6 col-md-2">
+      <p class="fw-bold mb-3" style="font-size:.9rem">About us</p>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Contact Us</a>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Privacy Policy</a>
+    </div>
+    <div class="col-12 col-md-3 ms-auto">
+      <p class="fw-bold mb-3" style="font-size:.9rem">Follow us</p>
+      <div class="d-flex gap-2">
+        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle p-1" style="width:34px;height:34px"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle p-1" style="width:34px;height:34px"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-top mt-4 pt-3 text-center text-muted" style="font-size:.8rem">&copy; 2026 Papaya.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  /* Phase II: fetch product data by ?id= and populate DOM */
+  (function() { document.title = `Papaya – Product #${new URLSearchParams(location.search).get('id')||'1'}`; })();
+</script>
+</body>
+</html>

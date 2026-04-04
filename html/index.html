@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Papaya – Home Page | ITCS223 Phase II -->
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Papaya – All Your IT Needs in One Place</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+<!-- ══ HEADER ═══════════════════════════════════════════════════ -->
+<header class="papaya-topbar bg-white border-bottom">
+  <!-- Top bar -->
+  <div class="d-flex align-items-center justify-content-between px-4 py-2 border-bottom">
+    <a href="index.html" class="papaya-logo text-dark text-decoration-none">&#9700;apaya</a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="search.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+        <i class="bi bi-search me-1"></i>search
+      </a>
+      <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+        <i class="bi bi-person-circle me-1"></i>log in
+      </a>
+      <a href="cart.html" class="text-dark fs-5"><i class="bi bi-cart3"></i></a>
+    </div>
+  </div>
+  <!-- Nav bar -->
+  <nav class="papaya-nav d-flex align-items-center px-3">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="products.html" class="nav-link">Products</a>
+    <a href="team.html" class="nav-link">Team</a>
+    <a href="login.html" class="nav-link ms-auto text-secondary small">
+      <i class="bi bi-lock-fill me-1"></i>Admin
+    </a>
+  </nav>
+</header>
+
+<!-- ══ MAIN ═════════════════════════════════════════════════════ -->
+<main class="container-fluid px-4 px-md-5 py-4">
+
+  <!-- Promo Banner -->
+  <section class="promo-banner bg-light rounded-4 mb-5 fade-in">
+    <div class="text-center text-secondary">
+      <p class="fw-bold mb-0" style="font-family:var(--font-head)">ADS / Promotion</p>
+      <small>Premium tech deals — updated weekly</small>
+    </div>
+  </section>
+
+  <!-- What Is Us -->
+  <article class="text-center mx-auto mb-5 fade-in" style="max-width:680px">
+    <h2 class="fw-bold mb-3">WHAT IS US</h2>
+    <p class="text-muted">
+      Papaya is your one-stop destination for premium IT products — from the latest smartphones and
+      laptops to cutting-edge accessories. We bring the best brands at unbeatable prices,
+      with expert guidance and reliable after-sales support.
+    </p>
+  </article>
+
+  <!-- Exclusive Products -->
+  <section class="mb-5 fade-in">
+    <h3 class="fw-bold mb-3" style="font-size:1.1rem">Exclusive Products</h3>
+    <div class="row g-3">
+
+      <div class="col-6 col-md-3">
+        <article class="product-card card border-0 bg-light rounded-4 p-2"
+          onclick="location.href='detail.html?id=1'" tabindex="0" role="button">
+          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=MSI+Vector"
+               alt="MSI Vector 16 HX AI" class="product-card-img rounded-3 bg-white"/>
+          <div class="card-body px-1 pb-1 pt-2">
+            <p class="mb-1" style="font-size:.85rem;font-weight:600">MSI Vector 16 HX AI A2XWIG-078TH Cosmos Gray</p>
+            <span class="text-price fw-bold">84,990</span>
+            <span class="text-muted text-decoration-line-through ms-1" style="font-size:.8rem">89,990</span>
+            <div class="text-muted" style="font-size:.75rem">save 5,000</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="product-card card border-0 bg-light rounded-4 p-2"
+          onclick="location.href='detail.html?id=2'" tabindex="0" role="button">
+          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Acer+Swift"
+               alt="Acer Swift Go 14 AI" class="product-card-img rounded-3 bg-white"/>
+          <div class="card-body px-1 pb-1 pt-2">
+            <p class="mb-1" style="font-size:.85rem;font-weight:600">Acer Swift Go 14 AI SFG14-75-5880 Blue</p>
+            <span class="text-price fw-bold">35,990</span>
+            <span class="text-muted text-decoration-line-through ms-1" style="font-size:.8rem">37,990</span>
+            <div class="text-muted" style="font-size:.75rem">save 2,000</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="product-card card border-0 bg-light rounded-4 p-2"
+          onclick="location.href='detail.html?id=3'" tabindex="0" role="button">
+          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Lenovo+Legion"
+               alt="Lenovo Legion 5" class="product-card-img rounded-3 bg-white"/>
+          <div class="card-body px-1 pb-1 pt-2">
+            <p class="mb-1" style="font-size:.85rem;font-weight:600">Lenovo Legion 5 15IRX10-83L Y00HGTA Black</p>
+            <span class="text-price fw-bold">42,990</span>
+            <span class="text-muted text-decoration-line-through ms-1" style="font-size:.8rem">45,990</span>
+            <div class="text-muted" style="font-size:.75rem">save 3,000</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <article class="product-card card border-0 bg-light rounded-4 p-2"
+          onclick="location.href='detail.html?id=4'" tabindex="0" role="button">
+          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=MSI+Katana"
+               alt="MSI Katana 15 HX" class="product-card-img rounded-3 bg-white"/>
+          <div class="card-body px-1 pb-1 pt-2">
+            <p class="mb-1" style="font-size:.85rem;font-weight:600">MSI Katana 15 HX B14WEK-414TH Black</p>
+            <span class="text-price fw-bold">40,990</span>
+            <span class="text-muted text-decoration-line-through ms-1" style="font-size:.8rem">46,990</span>
+            <div class="text-muted" style="font-size:.75rem">save 6,000</div>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="mb-5 mx-auto" style="max-width:760px">
+    <h2 class="fw-bold text-center mb-4" style="font-size:1.4rem">FAQ</h2>
+
+    <div class="border rounded-3 mb-2">
+      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
+        role="button" style="cursor:pointer;font-size:.93rem">
+        Do you offer warranty on all products?
+        <span class="faq-icon text-muted">∨</span>
+      </div>
+      <div class="faq-body open text-muted" style="font-size:.88rem">
+        Yes. All products come with the manufacturer's official warranty — typically 1–3 years for
+        laptops and 1 year for smartphones and accessories.
+      </div>
+    </div>
+
+    <div class="border rounded-3 mb-2">
+      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
+        role="button" style="cursor:pointer;font-size:.93rem">
+        How long does delivery take?
+        <span class="faq-icon text-muted">∨</span>
+      </div>
+      <div class="faq-body text-muted" style="font-size:.88rem">
+        Standard delivery takes 2–5 business days. Express next-day delivery is available for Bangkok orders before 3 PM.
+      </div>
+    </div>
+
+    <div class="border rounded-3 mb-2">
+      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
+        role="button" style="cursor:pointer;font-size:.93rem">
+        Can I return or exchange a product?
+        <span class="faq-icon text-muted">∨</span>
+      </div>
+      <div class="faq-body text-muted" style="font-size:.88rem">
+        We accept returns within 7 days of purchase if the product is unused and in original packaging.
+      </div>
+    </div>
+
+    <div class="border rounded-3 mb-2">
+      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
+        role="button" style="cursor:pointer;font-size:.93rem">
+        What payment methods are accepted?
+        <span class="faq-icon text-muted">∨</span>
+      </div>
+      <div class="faq-body text-muted" style="font-size:.88rem">
+        Visa, MasterCard, AMEX, PromptPay, bank transfer, and instalment plans via supported banks.
+      </div>
+    </div>
+
+    <div class="border rounded-3">
+      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
+        role="button" style="cursor:pointer;font-size:.93rem">
+        Is my personal data safe?
+        <span class="faq-icon text-muted">∨</span>
+      </div>
+      <div class="faq-body text-muted" style="font-size:.88rem">
+        Absolutely. We comply with Thailand's PDPA. Your information is never shared without consent.
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+<footer class="border-top mt-5 py-4 px-4 px-md-5">
+  <div class="row g-4">
+    <div class="col-12 col-md-3">
+      <div class="papaya-logo mb-2">&#9700;apaya</div>
+      <div class="text-muted" style="font-size:.82rem;line-height:1.8">
+        Address: 123 IT Street, Salaya, Nakhon Pathom<br>Email: hello@papaya.tech<br>Tel: +66 2-441-0000
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <p class="fw-bold mb-3" style="font-size:.9rem">About us</p>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Contact Us</a>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Terms &amp; Conditions</a>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Privacy Policy</a>
+    </div>
+    <div class="col-6 col-md-2">
+      <p class="fw-bold mb-3" style="font-size:.9rem">&nbsp;</p>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Refund &amp; Return Policy</a>
+      <a href="#" class="d-block text-muted text-decoration-none mb-2 small">Find Us Nearby</a>
+    </div>
+    <div class="col-12 col-md-3 ms-auto">
+      <p class="fw-bold mb-3" style="font-size:.9rem">Follow us</p>
+      <div class="d-flex gap-2">
+        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle p-1" style="width:34px;height:34px">
+          <i class="bi bi-facebook"></i></a>
+        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle p-1" style="width:34px;height:34px">
+          <i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-top mt-4 pt-3 text-center text-muted" style="font-size:.8rem">
+    &copy; 2026 Papaya. All rights reserved. | ITCS223 Project Phase II
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Papaya – Add Product (Admin) | ITCS223 Phase II -->
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Papaya – Add Product</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<header class="papaya-topbar bg-white border-bottom">
+  <div class="d-flex align-items-center justify-content-between px-4 py-2 border-bottom">
+    <a href="index.html" class="papaya-logo text-dark text-decoration-none">&#9700;apaya</a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="search.html" class="btn btn-outline-dark btn-sm rounded-pill px-3"><i class="bi bi-search me-1"></i>search</a>
+      <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3"><i class="bi bi-person-circle me-1"></i>Admin</a>
+      <a href="cart.html" class="text-dark fs-5"><i class="bi bi-cart3"></i></a>
+    </div>
+  </div>
+  <nav class="papaya-nav d-flex align-items-center px-3">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="products.html" class="nav-link">Products</a>
+    <a href="team.html" class="nav-link">Team</a>
+    <a href="login.html" class="nav-link ms-auto text-secondary small active"><i class="bi bi-lock-fill me-1"></i>Admin</a>
+  </nav>
+</header>
+
+<main class="container-fluid px-4 px-md-5 py-4" style="max-width:860px">
+  <h1 class="fw-bold mb-4" style="font-size:1.9rem">Add Product</h1>
+  <form id="addProductForm" novalidate>
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold small">Name</label>
+      <input type="text" id="add-name" class="form-control rounded-3" placeholder="Value" required/>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold small">Brand</label>
+      <select id="add-brand" class="form-select rounded-3">
+        <option value="">Value</option>
+        <option>Apple</option><option>Samsung</option><option>MSI</option>
+        <option>Acer</option><option>Lenovo</option><option>Xiaomi</option>
+        <option>ASUS</option><option>Sony</option><option>Other</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold small">Category</label>
+      <input type="text" id="add-category" class="form-control rounded-3" placeholder="Value"/>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-6">
+        <label class="form-label fw-semibold small">Price</label>
+        <input type="number" id="add-price" class="form-control rounded-3" placeholder="Value" min="0"/>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="form-label fw-semibold small">Stock</label>
+        <input type="number" id="add-stock" class="form-control rounded-3" placeholder="Value" min="0"/>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold small">Description</label>
+      <textarea id="add-desc" class="form-control rounded-3" rows="4" placeholder="Value"></textarea>
+    </div>
+    <div class="mb-4">
+      <label class="form-label fw-semibold small">Image Upload</label>
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">file.png</span>
+        <label class="btn btn-outline-secondary btn-sm rounded-3" for="add-image">
+          <i class="bi bi-upload me-1"></i>Browse
+          <input type="file" id="add-image" accept="image/*" class="d-none"
+            onchange="previewImage(this,'addImgPreview')"/>
+        </label>
+      </div>
+      <img id="addImgPreview" src="" alt="Preview"
+        class="d-none mt-2 rounded-3" style="max-height:120px;object-fit:contain"/>
+    </div>
+
+    <div id="addError" class="text-danger mb-2 small d-none"></div>
+    <button type="submit" class="btn btn-success w-100 rounded-3 py-2 fw-semibold">Add</button>
+  </form>
+</main>
+
+<footer class="border-top mt-5 py-4 px-4 px-md-5">
+  <div class="border-top pt-3 text-center text-muted" style="font-size:.8rem">&copy; 2026 Papaya.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+  /* Phase II: replace with fetch POST to /api/products */
+  document.getElementById('addProductForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('add-name').value.trim();
+    const err  = document.getElementById('addError');
+    if (!name) { err.textContent = 'Product name is required.'; err.classList.remove('d-none'); return; }
+    err.classList.add('d-none');
+    alert(`Product "${name}" added!`);
+    window.location.href = 'product-management.html';
+  });
+</script>
+</body>
+</html>
