@@ -25,24 +25,24 @@
 
 ```
 .
-├── app.js                                            # Express web server entry point
+├── app.js                        # Express web server entry point
 ├── html/
-│   ├── add-product.html                    # Admin – add new product form
-│   ├── cart.html                                 # Shopping cart page
-│   ├── detail.html                              # Product detail template page
-│   ├── edit-product.html                   # Admin – edit existing product form
-│   ├── index.html                              # Home page
-│   ├── login.html                               # Admin login page
-│   ├── product-management.html     # Admin – product list with edit/delete
-│   ├── products.html                         # Public product listing page
-│   ├── search.html                            # Product search page (results on demand)
-│   ├── sign-up.html                          # User registration page
-│   └── team.html                              # Team members page
+│   ├── add-product.html          # Admin – add new product form
+│   ├── cart.html                 # Shopping cart page
+│   ├── detail.html               # Product detail template page
+│   ├── edit-product.html         # Admin – edit existing product form
+│   ├── index.html                # Home page
+│   ├── login.html                # Admin login page
+│   ├── product-management.html   # Admin – product list with edit/delete
+│   ├── products.html             # Public product listing page
+│   ├── search.html               # Product search page (results on demand)
+│   ├── sign-up.html              # User registration page
+│   └── team.html                 # Team members page
 ├── public/
-│   └── style.css                                 # Global custom stylesheet
-├── package.json                               # Project metadata and dependencies
-├── package-lock.json                       # Locked dependency versions
-└── README.md                             # This file
+│   └── style.css                 # Global custom stylesheet
+├── package.json                  # Project metadata and dependencies
+├── package-lock.json             # Locked dependency versions
+└── README.md                     # This file
 ```
 
 ---
