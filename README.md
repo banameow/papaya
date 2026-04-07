@@ -39,7 +39,9 @@
 │   ├── sign-up.html              # User registration page
 │   └── team.html                 # Team members page
 ├── public/
-│   └── style.css                 # Global custom stylesheet
+│   ├── product_images/           # Store product images
+│   │   └── 1.jpg
+│   ├── script.js                 # Frontend script for interactive features
 ├── package.json                  # Project metadata and dependencies
 ├── package-lock.json             # Locked dependency versions
 └── README.md                     # This file

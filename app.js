@@ -7,7 +7,6 @@ const app = express();
 const router = express.Router();
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "html")));
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -29,7 +28,23 @@ connection.connect(function (err) {
   console.log(`Connected DB: ${process.env.MYSQL_DATABASE}`);
 });
 
-router.get("/", (req, res) => {});
+router.get(["/", "/index.html"], (req, res) => {
+  res.sendFile(`${__dirname}/html/index.html`);
+});
+
+router.get('/products.html', (req, res) => {
+  res.sendFile(`${__dirname}/html/products.html`)
+})
+
+router.get("/api/exclusive/products", (req, res) => {
+  let sql = "select * from product limit 4;";
+
+  connection.query(sql, (err, results) => {
+    if (err) throw err;
+
+    return res.send(results);
+  });
+});
 
 router.use((req, res, next) => {
   res.status(404).sendFile(`${__dirname}/html/notfound.html`);
