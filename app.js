@@ -6,6 +6,7 @@ const path = require("path");
 const app = express();
 const router = express.Router();
 
+// ===================== App =====================
 app.use(express.static(path.join(__dirname, "public")));
 
 router.use(express.json());
@@ -15,6 +16,7 @@ app.use(router);
 
 dotenv.config();
 
+// ===================== Database Connection =====================
 var connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USERNAME,
@@ -28,14 +30,20 @@ connection.connect(function (err) {
   console.log(`Connected DB: ${process.env.MYSQL_DATABASE}`);
 });
 
+// ===================== Pages Routing =====================
 router.get(["/", "/index.html"], (req, res) => {
   res.sendFile(`${__dirname}/html/index.html`);
 });
 
-router.get('/products.html', (req, res) => {
-  res.sendFile(`${__dirname}/html/products.html`)
-})
+router.get("/products.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/products.html`);
+});
 
+router.get("/team.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/team.html`);
+});
+
+// ===================== Calling API =====================
 router.get("/api/exclusive/products", (req, res) => {
   let sql = "select * from product limit 4;";
 
@@ -46,10 +54,13 @@ router.get("/api/exclusive/products", (req, res) => {
   });
 });
 
+// ===================== Not Found page =====================
+// Must be at the bottom of code
 router.use((req, res, next) => {
   res.status(404).sendFile(`${__dirname}/html/notfound.html`);
 });
 
+// ===================== App Listen =====================
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port", process.env.PORT);
 });

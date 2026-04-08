@@ -122,62 +122,73 @@
   </section>
 
   <!-- FAQ -->
-  <section class="mb-5 mx-auto" style="max-width:760px">
+  <section class="mb-5 mx-auto" style="max-width:80%">
     <h2 class="fw-bold text-center mb-4" style="font-size:1.4rem">FAQ</h2>
 
-    <div class="border rounded-3 mb-2">
-      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
-        role="button" style="cursor:pointer;font-size:.93rem">
-        Do you offer warranty on all products?
-        <span class="faq-icon text-muted">∨</span>
+    <div id="faq-accordion" class="accordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Do you offer warranty on all products?
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faq-accordion">
+          <div class="accordion-body text-secondary my-2">
+            <strong>Standard delivery takes 2-5 business days.</strong> Express next-day delivery is available for Bangkok orders before 3 PM.
+          </div>
+        </div>
       </div>
-      <div class="faq-body open text-muted" style="font-size:.88rem">
-        Yes. All products come with the manufacturer's official warranty — typically 1–3 years for
-        laptops and 1 year for smartphones and accessories.
-      </div>
-    </div>
 
-    <div class="border rounded-3 mb-2">
-      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
-        role="button" style="cursor:pointer;font-size:.93rem">
-        How long does delivery take?
-        <span class="faq-icon text-muted">∨</span>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            How long does delivery take?
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+          <div class="accordion-body text-secondary my-2">
+            Standard delivery takes 2-5 business days. Express next-day delivery is available for Bangkok orders before 3 PM.
+          </div>
+        </div>
       </div>
-      <div class="faq-body text-muted" style="font-size:.88rem">
-        Standard delivery takes 2–5 business days. Express next-day delivery is available for Bangkok orders before 3 PM.
-      </div>
-    </div>
 
-    <div class="border rounded-3 mb-2">
-      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
-        role="button" style="cursor:pointer;font-size:.93rem">
-        Can I return or exchange a product?
-        <span class="faq-icon text-muted">∨</span>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Can I return or exchange a product?
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+          <div class="accordion-body text-secondary my-2">
+            We accept returns within 7 days of purchase if the product is unused and in original packaging.
+          </div>
+        </div>
       </div>
-      <div class="faq-body text-muted" style="font-size:.88rem">
-        We accept returns within 7 days of purchase if the product is unused and in original packaging.
-      </div>
-    </div>
 
-    <div class="border rounded-3 mb-2">
-      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
-        role="button" style="cursor:pointer;font-size:.93rem">
-        What payment methods are accepted?
-        <span class="faq-icon text-muted">∨</span>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+            What payment methods are accepted?
+          </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+          <div class="accordion-body text-secondary my-2">
+            Visa, MasterCard, AMEX, PromptPay, bank transfer, and instalment plans via supported banks.
+          </div>
+        </div>
       </div>
-      <div class="faq-body text-muted" style="font-size:.88rem">
-        Visa, MasterCard, AMEX, PromptPay, bank transfer, and instalment plans via supported banks.
-      </div>
-    </div>
 
-    <div class="border rounded-3">
-      <div class="faq-header d-flex justify-content-between align-items-center p-3 fw-semibold"
-        role="button" style="cursor:pointer;font-size:.93rem">
-        Is my personal data safe?
-        <span class="faq-icon text-muted">∨</span>
-      </div>
-      <div class="faq-body text-muted" style="font-size:.88rem">
-        Absolutely. We comply with Thailand's PDPA. Your information is never shared without consent.
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+            Is my personal data safe?
+          </button>
+        </h2>
+        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#faq-accordion">
+          <div class="accordion-body text-secondary my-2">
+            <strong>Absolutely.</strong> We comply with Thailand's PDPA. Your information is never shared without consent.
+          </div>
+        </div>
       </div>
     </div>
 

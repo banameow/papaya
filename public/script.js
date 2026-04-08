@@ -27,7 +27,7 @@ function createProductCard(product) {
 
   const price = document.createElement("span");
   price.className = "text-price fw-bold";
-  price.textContent = '$' + product.price;
+  price.textContent = "$" + product.price;
 
   cardBody.appendChild(p);
   cardBody.appendChild(price);

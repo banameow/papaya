@@ -65,6 +65,12 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); }
 /* ── Promo banner ───────────────────────────────────────────── */
 .promo-banner { min-height: 180px; display: flex; align-items: center; justify-content: center; }
 
+/* ── Accordion ──────────────────────────────────────── */
+.accordion-button:focus:not(:focus-visible) {
+  box-shadow: none;
+  outline: none;
+}
+
 /* ── Fade-in animation ──────────────────────────────────────── */
 @keyframes fadeInUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 .fade-in { animation: fadeInUp .4s ease both; }
