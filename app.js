@@ -2,12 +2,14 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mysql = require("mysql2");
 const path = require("path");
+var cors = require("cors");
 
 const app = express();
 const router = express.Router();
 
 // ===================== App =====================
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -52,6 +54,19 @@ router.get("/api/exclusive/products", (req, res) => {
 
     return res.send(results);
   });
+});
+
+router.get("/api/news", async (req, res) => {
+  try {
+    let newsReq = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${process.env.API_KEY}`;
+
+    const newsRes = await fetch(newsReq);
+    const result = await newsRes.json();
+
+    res.send(result);
+  } catch (err) {
+    console.log("Failed to fetch news:", err);
+  }
 });
 
 // ===================== Not Found page =====================

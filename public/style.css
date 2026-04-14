@@ -63,7 +63,7 @@ h1,h2,h3,h4,h5 { font-family: var(--font-head); }
 .team-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--papaya-border); }
 
 /* ── Promo banner ───────────────────────────────────────────── */
-.promo-banner { min-height: 180px; display: flex; align-items: center; justify-content: center; }
+.promo-banner { min-height: 120px; align-items: center; }
 
 /* ── Accordion ──────────────────────────────────────── */
 .accordion-button:focus:not(:focus-visible) {
