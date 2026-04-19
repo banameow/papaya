@@ -10,7 +10,6 @@
 | Nunnapat Ketruam | 6788040 |
 | Nawaphon Kittisongkhram | 6788048 |
 | Chattriyaporn Muenchanasongkram | 6788065 |
-| Waiyawat Orangaphichat | 6788075 |
 | Virada Klinthongchai | 6788193 |
 
 ---
@@ -141,4 +140,4 @@ http://localhost:3000
 
 ---
 
-*Last updated: March 2026 | ITCS223 Section X — Papaya Group*
+*Last updated: March 2026 | ITCS223 Section 1 — Group 14*

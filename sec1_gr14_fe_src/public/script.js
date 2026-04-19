@@ -15,7 +15,7 @@ function createProductCard(product) {
   article.setAttribute("role", "button");
 
   const img = document.createElement("img");
-  img.src = `../public/product_images/${product.image_url}`;
+  img.src = `/product_images/${product.image_url}`;
   img.alt = `${product.name} ${product.brand} ${product.category}`;
   img.className = "product-card-img rounded-3 bg-white";
 
@@ -52,6 +52,31 @@ async function loadExclusiveProduct() {
     })
     .catch((err) => console.log(err));
 }
+
+// ------------------------ add-product.html --------------------------
+// document
+//   .getElementById("addProductForm")
+//   .addEventListener("submit", async (e) => {
+//     e.preventDefault();
+
+//     const fileInput = document.getElementById("add-image");
+//     const file = fileInput.files[0];
+
+//     const formData = new FormData();
+//     formData.append("image", file);
+
+//     try {
+//       const res = await fetch(`${BASE_SERVER_URL}/api/upload`, {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       const data = await res.json();
+//       console.log("Server response:", data);
+//     } catch (err) {
+//       console.log("Upload error:", err);
+//     }
+//   });
 
 // ------------------------ Public API : newsapi.org --------------------------
 async function loadCarouselNews() {
@@ -93,4 +118,4 @@ async function loadCarouselNews() {
 }
 
 loadExclusiveProduct();
-loadCarouselNews();
+// loadCarouselNews(); // Do comment when developing, so it not waste the public request :>
