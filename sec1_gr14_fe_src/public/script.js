@@ -15,7 +15,7 @@ function createProductCard(product) {
   article.setAttribute("role", "button");
 
   const img = document.createElement("img");
-  img.src = `/product_images/${product.image_url}`;
+  img.src = `https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${product.image_url}`;
   img.alt = `${product.name} ${product.brand} ${product.category}`;
   img.className = "product-card-img rounded-3 bg-white";
 
@@ -54,29 +54,165 @@ async function loadExclusiveProduct() {
 }
 
 // ------------------------ add-product.html --------------------------
-// document
-//   .getElementById("addProductForm")
-//   .addEventListener("submit", async (e) => {
-//     e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("addProductForm");
 
-//     const fileInput = document.getElementById("add-image");
-//     const file = fileInput.files[0];
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-//     const formData = new FormData();
-//     formData.append("image", file);
+      const errorDiv = document.getElementById("addError");
+      errorDiv.classList.add("d-none");
 
-//     try {
-//       const res = await fetch(`${BASE_SERVER_URL}/api/upload`, {
-//         method: "POST",
-//         body: formData,
-//       });
+      // --------- basic fields ----------
+      const name = document.getElementById("add-name").value.trim();
+      const brand = document.getElementById("add-brand").value;
+      const category = document.getElementById("add-category").value.trim();
+      const price = parseFloat(document.getElementById("add-price").value) || 0;
+      const stock = parseInt(document.getElementById("add-stock").value) || 0;
 
-//       const data = await res.json();
-//       console.log("Server response:", data);
-//     } catch (err) {
-//       console.log("Upload error:", err);
-//     }
-//   });
+      // --------- extract specs ----------
+      const specRows = document.querySelectorAll(".spec-row");
+
+      const description = {};
+
+      specRows.forEach((row) => {
+        const key = row.querySelector(".spec-key").value.trim();
+        const value = row.querySelector(".spec-value").value.trim();
+
+        if (key && value) {
+          description[key] = value;
+        }
+      });
+
+      // --------- image upload ----------
+      const fileInput = document.getElementById("add-image");
+      const file = fileInput.files[0];
+
+      let imageUrl = "";
+
+      try {
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "papaya_products");
+
+          const res = await fetch(
+            "https://api.cloudinary.com/v1_1/dctylcksu/upload",
+            { method: "POST", body: formData },
+          );
+
+          const data = await res.json();
+          imageUrl = `${data.public_id}.${data.format}`;
+        }
+
+        // --------- final product object ----------
+        const product = {
+          name,
+          brand,
+          category,
+          price,
+          stock_quantity: stock,
+          description,
+          image_url: imageUrl,
+        };
+
+        // --------- send to backend ----------
+        const response = await fetch(`${BASE_SERVER_URL}/api/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to add product");
+        }
+
+        alert("Product added successfully!");
+        form.reset();
+
+        // optional: clear specs UI
+        document.getElementById("spec-container").innerHTML = "";
+
+        // clear image input
+        document.getElementById("add-image").value = "";
+
+        // clear preview
+        const preview = document.getElementById("addImgPreview");
+        preview.src = "";
+        preview.classList.add("d-none");
+
+        // reset file label
+        document.getElementById("file-label").textContent = "file.png";
+      } catch (err) {
+        console.error(err);
+        errorDiv.textContent = "Something went wrong";
+        errorDiv.classList.remove("d-none");
+      }
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("spec-container");
+  const addBtn = document.getElementById("add-spec-btn");
+
+  // Add new spec row
+  function addSpecRow(key = "", value = "") {
+    const row = document.createElement("div");
+    row.className = "row g-2 mb-2 spec-row align-items-center";
+
+    row.innerHTML = `
+        <div class="col-5">
+          <input type="text" class="form-control spec-key" placeholder="storage" value="${key}">
+        </div>
+
+        <div class="col-5">
+          <input type="text" class="form-control spec-value" placeholder="1TB" value="${value}">
+        </div>
+
+        <div class="col-2 d-flex justify-content-center">
+          <button type="button" class="btn btn-sm btn-outline-danger remove-spec">
+            x
+          </button>
+        </div>
+      `;
+
+    // remove button
+    row.querySelector(".remove-spec").addEventListener("click", () => {
+      row.remove();
+    });
+
+    container.appendChild(row);
+  }
+
+  // Add first row by default
+  addSpecRow();
+
+  // Add button click
+  addBtn.addEventListener("click", () => addSpecRow());
+
+  // Extract specs into object (use this in your submit handler)
+  window.getSpecs = function () {
+    const specs = {};
+    const rows = document.querySelectorAll(".spec-row");
+
+    rows.forEach((row) => {
+      const key = row.querySelector(".spec-key").value.trim();
+      const value = row.querySelector(".spec-value").value.trim();
+
+      if (key && value) {
+        specs[key] = value;
+      }
+    });
+
+    return specs;
+  };
+});
 
 // ------------------------ Public API : newsapi.org --------------------------
 async function loadCarouselNews() {

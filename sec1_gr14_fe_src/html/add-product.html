@@ -32,12 +32,12 @@
 
     <div class="mb-3">
       <label class="form-label fw-semibold small">Name</label>
-      <input type="text" id="add-name" class="form-control rounded-3" placeholder="Value" required/>
+      <input type="text" id="add-name" class="form-control rounded-3" placeholder="Iphone 99" required/>
     </div>
     <div class="mb-3">
       <label class="form-label fw-semibold small">Brand</label>
       <select id="add-brand" class="form-select rounded-3">
-        <option value="">Value</option>
+        <option value=""></option>
         <option>Apple</option><option>Samsung</option><option>MSI</option>
         <option>Acer</option><option>Lenovo</option><option>Xiaomi</option>
         <option>ASUS</option><option>Sony</option><option>Other</option>
@@ -45,22 +45,31 @@
     </div>
     <div class="mb-3">
       <label class="form-label fw-semibold small">Category</label>
-      <input type="text" id="add-category" class="form-control rounded-3" placeholder="Value"/>
+      <input type="text" id="add-category" class="form-control rounded-3" placeholder="Phone"/>
     </div>
+
     <div class="row g-3 mb-3">
       <div class="col-12 col-md-6">
         <label class="form-label fw-semibold small">Price</label>
-        <input type="number" id="add-price" class="form-control rounded-3" placeholder="Value" min="0"/>
+        <input type="number" id="add-price" class="form-control rounded-3" placeholder="99.99" min="0"/>
       </div>
       <div class="col-12 col-md-6">
         <label class="form-label fw-semibold small">Stock</label>
-        <input type="number" id="add-stock" class="form-control rounded-3" placeholder="Value" min="0"/>
+        <input type="number" id="add-stock" class="form-control rounded-3" placeholder="100" min="0"/>
       </div>
     </div>
+    
     <div class="mb-3">
-      <label class="form-label fw-semibold small">Description</label>
-      <textarea id="add-desc" class="form-control rounded-3" rows="4" placeholder="Value"></textarea>
+      <label class="form-label fw-semibold small">Descriptions</label>
+
+      <div id="spec-container"></div>
+
+      <button type="button" id="add-spec-btn" 
+        class="btn btn-sm btn-outline-secondary mt-2">
+        + Add Spec
+      </button>
     </div>
+
     <div class="mb-4">
       <label class="form-label fw-semibold small">Image Upload</label>
       <div class="d-flex align-items-center gap-2">

@@ -1,8 +1,5 @@
 const express = require("express");
 const mysql = require("mysql2");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-const upload = multer({ dest: "papaya/" });
 const cors = require("cors");
 
 const app = express();
@@ -31,60 +28,44 @@ connection.connect(function (err) {
 });
 // #endregion
 
-// #region ===================== Cloudinary: for images =====================
-const API_KEY = "137843743929997";
-const API_SECRET = "Zh0leDXTB-TmiBe7rq_6hHYP2gM";
-const CLOUD_NAME = "dctylcksu";
-
-const CLOUDINARY_URL = `cloudinary://${API_KEY}:${API_SECRET}@${CLOUD_NAME}`;
-
-cloudinary.config({
-  cloud_name: CLOUD_NAME,
-  api_key: API_KEY,
-  api_secret: API_SECRET,
-});
-
-const uploadImage = async (imagePath) => {
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
-
-  try {
-    const result = await cloudinary.uploader.upload(imagePath, options);
-
-    return result.public_id;
-  } catch (error) {
-    console.error(error);
-  }
-};
-// #endregion
-
 // #region ===================== API =====================
-router.post("/api/upload", upload.single("image"), async (req, res) => {
+
+router.post("/api/add", async (req, res) => {
   try {
-    const file = req.file;
+    const {
+      name,
+      brand,
+      category,
+      price,
+      stock_quantity,
+      description,
+      image_url,
+    } = req.body;
 
-    if (!file) {
-      return res.status(400).json({ msg: "No file uploaded" });
-    }
+    const sql = `
+      INSERT INTO product
+      (name, brand, category, price, stock_quantity, description, image_url)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    const publicId = await uploadImage(file.path);
+    const values = [
+      name,
+      brand,
+      category,
+      price,
+      stock_quantity,
+      JSON.stringify(description),
+      image_url,
+    ];
 
-    res.json({
-      msg: "Upload complete",
-      image_publicId: publicId,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ err: "Something went wrong" });
+    await connection.execute(sql, values);
+
+    res.json({ message: "Product added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 });
-
-router.get('/api/temp/product', (req, res) => {
-  res.send(`https://res.cloudinary.com/${CLOUD_NAME}/image/upload/b95247e8e4a7589b8c7d3319267c90c3.jpg`)
-})
 
 router.get("/api/exclusive/products", (req, res) => {
   let sql = "select * from product limit 4;";
