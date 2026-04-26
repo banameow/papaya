@@ -29,6 +29,7 @@ connection.connect(function (err) {
 // #endregion
 
 // #region ===================== API =====================
+
 router.post("/api/add", async (req, res) => {
   try {
     const {
@@ -74,6 +75,57 @@ router.get("/api/exclusive/products", (req, res) => {
 
     return res.send(results);
   });
+});
+
+router.get("/api/cart/:userId", async (req, res) => {
+  try {
+    const [rows] = await connection.execute(
+      `SELECT c.*, p.name, p.price, p.image_url 
+       FROM cart c JOIN product p ON c.product_id = p.id
+       WHERE c.user_id = ?`,
+      [req.params.userId]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.post("/api/cart", async (req, res) => {
+  try {
+    const { user_id, product_id, quantity } = req.body;
+    await connection.execute(
+      `INSERT INTO cart (user_id, product_id, quantity)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE quantity = quantity + ?`,
+      [user_id, product_id, quantity, quantity]
+    );
+    res.json({ message: "Added to cart" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.delete("/api/cart/:cartId", async (req, res) => {
+  try {
+    await connection.execute("DELETE FROM cart WHERE id = ?", [req.params.cartId]);
+    res.json({ message: "Removed from cart" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/api/products/:id", async (req, res) => {
+  try {
+    const [rows] = await connection.execute(
+      "SELECT * FROM product WHERE id = ?",
+      [req.params.id]
+    );
+    if (rows.length === 0) return res.status(404).json({ message: "Not found" });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 router.get("/api/news", async (req, res) => {

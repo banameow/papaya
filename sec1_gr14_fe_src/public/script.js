@@ -255,3 +255,193 @@ async function loadCarouselNews() {
 
 loadExclusiveProduct();
 // loadCarouselNews(); // Do comment when developing, so it not waste the public request :>
+
+// ------------------------ detail.html --------------------------
+async function loadProductDetail() {
+  const id = new URLSearchParams(location.search).get("id");
+  if (!id) return;
+
+  try {
+    const res = await fetch(`${BASE_SERVER_URL}/api/products/${id}`);
+    if (!res.ok) { location.href = "notfound.html"; return; }
+    const p = await res.json();
+
+    // populate ข้อมูล
+    document.getElementById("productName").textContent = p.name;
+    document.getElementById("productPrice").textContent = Number(p.price).toLocaleString();
+    document.getElementById("mainImage").src =
+      `https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${p.image_url}`;
+    document.title = `Papaya – ${p.name}`;
+
+    // ถ้า description เป็น JSON object → สร้าง spec table
+    const desc = typeof p.description === "string" ? JSON.parse(p.description) : p.description;
+    const tbody = document.querySelector(".spec-table tbody");
+    tbody.innerHTML = "";
+    Object.entries(desc).forEach(([key, val]) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${key}</td><td>${val}</td>`;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ------------------------ cart.html --------------------------
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart") || "[]");
+}
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartBadge();
+}
+function updateCartBadge() {
+  const count = getCart().reduce((sum, i) => sum + i.qty, 0);
+  document.querySelectorAll("#cartCount").forEach(el => el.textContent = count);
+}
+
+function addToCart() {
+  const id    = new URLSearchParams(location.search).get("id");
+  const name  = document.getElementById("productName").textContent;
+  const price = parseInt(document.getElementById("productPrice").textContent.replace(/,/g, ""));
+  const qty   = parseInt(document.querySelector(".qty-val").value);
+  const img   = document.getElementById("mainImage").src;
+
+  const cart = getCart();
+  const existing = cart.find(i => i.id === id);
+  if (existing) existing.qty += qty;
+  else cart.push({ id, name, price, qty, img });
+  saveCart(cart);
+
+  const msg = document.getElementById("cartSuccess");
+  msg.classList.remove("d-none");
+  setTimeout(() => msg.classList.add("d-none"), 2000);
+}
+
+// render cart items ใน cart.html
+function renderCart() {
+  const cart = getCart();
+  const section = document.querySelector("section[aria-label='Cart items']");
+  if (!section) return;
+
+  section.innerHTML = "";
+  cart.forEach(item => {
+    const article = document.createElement("article");
+    article.className = "cart-item d-flex align-items-center gap-3 bg-light rounded-4 p-3 mb-3";
+    article.dataset.price = item.price;
+    article.dataset.id = item.id;
+    article.innerHTML = `
+      <img src="${item.img}" alt="${item.name}" class="cart-item-img bg-white"/>
+      <div class="flex-grow-1">
+        <p class="fw-bold mb-0">${item.name}</p>
+      </div>
+      <span class="text-price fw-bold me-2">${Number(item.price).toLocaleString()}</span>
+      <div class="qty-control border rounded-pill overflow-hidden">
+        <button class="qty-btn qty-minus">−</button>
+        <input class="qty-val" type="number" value="${item.qty}" min="1" readonly/>
+        <button class="qty-btn qty-plus">+</button>
+      </div>
+      <button class="btn btn-link text-muted p-0 ms-1" onclick="removeCartItem(this)" aria-label="Remove">
+        <i class="bi bi-trash3"></i>
+      </button>`;
+    section.appendChild(article);
+  });
+
+  document.getElementById("cartItemCount").textContent = `(${cart.length})`;
+  updateSummary();
+  initQtyButtons();
+}
+
+function removeCartItem(btn) {
+  const article = btn.closest("article");
+  const id = article.dataset.id;
+  const cart = getCart().filter(i => i.id !== id);
+  saveCart(cart);
+  renderCart();
+}
+
+function updateSummary() {
+  const cart = getCart();
+  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const discount = parseInt(document.getElementById("cart-discount")?.dataset.discount || 0);
+  document.getElementById("cart-subtotal").textContent = subtotal.toLocaleString();
+  document.getElementById("cart-total").textContent = (subtotal - discount).toLocaleString();
+}
+
+function applyCoupon() {
+  const code = document.getElementById("couponInput").value.trim().toUpperCase();
+  const msg  = document.getElementById("couponMsg");
+  const discountEl = document.getElementById("cart-discount");
+  const COUPONS = { "PAPAYA10": 100, "SAVE500": 500 }; // ตัวอย่าง
+
+  if (COUPONS[code]) {
+    discountEl.textContent = COUPONS[code].toLocaleString();
+    discountEl.dataset.discount = COUPONS[code];
+    msg.textContent = `✓ Coupon applied! -${COUPONS[code]} ฿`;
+    msg.className = "mb-2 small text-success";
+  } else {
+    msg.textContent = "Invalid coupon code";
+    msg.className = "mb-2 small text-danger";
+  }
+  updateSummary();
+}
+function checkout() {
+  localStorage.removeItem("cart");
+  updateCartBadge();
+  
+  location.href = "index.html";
+}
+function checkout() {
+  localStorage.removeItem("cart");
+  updateCartBadge();
+  alert("Order placed successfully! 🎉");
+  location.href = "index.html";
+}
+
+function initQtyButtons() {
+  document.querySelectorAll(".cart-item").forEach(article => {
+    const minus = article.querySelector(".qty-minus");
+    const plus  = article.querySelector(".qty-plus");
+    const input = article.querySelector(".qty-val");
+    const id    = article.dataset.id;
+
+    plus.onclick = () => {
+      input.value = +input.value + 1;
+      updateCartQty(id, +input.value);
+    };
+    minus.onclick = () => {
+      if (+input.value > 1) {
+        input.value = +input.value - 1;
+        updateCartQty(id, +input.value);
+      }
+    };
+  });
+}
+
+function updateCartQty(id, qty) {
+  const cart = getCart();
+  const item = cart.find(i => i.id === id);
+  if (item) item.qty = qty;
+  saveCart(cart);
+  updateSummary();
+}
+
+// ------------------------ DOMContentLoaded --------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartBadge();
+  
+  // detail page
+  if (document.getElementById("productName")) loadProductDetail();
+
+  // cart page  
+  if (document.querySelector("section[aria-label='Cart items']")) renderCart();
+
+  // qty buttons on detail page
+  const minus = document.querySelector(".qty-minus");
+  const plus  = document.querySelector(".qty-plus");
+  const input = document.querySelector(".qty-val");
+  if (minus && plus && input && !document.querySelector(".cart-item")) {
+    plus.onclick  = () => { input.value = +input.value + 1; };
+    minus.onclick = () => { if (+input.value > 1) input.value = +input.value - 1; };
+  }
+});

@@ -25,7 +25,13 @@ router.get("/add-product.html", (req, res) => {
 router.get("/team.html", (req, res) => {
   res.sendFile(`${__dirname}/html/team.html`);
 });
+router.get("/detail.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/detail.html`);
+});
 
+router.get("/cart.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/cart.html`);
+});
 // ===================== Not Found page =====================
 // Must be at the bottom of code
 router.use((req, res, next) => {
