@@ -108,28 +108,26 @@ INSERT INTO login_info VALUES
 
 -- PRODUCT (20)
 INSERT INTO product VALUES
-(1,'iPhone 14','Apple','Phone',999,50,'{"storage":"128GB"}','1.jpg'),
-(2,'iPhone 13','Apple','Phone',799,40,'{"storage":"128GB"}','1.jpg'),
-(3,'Galaxy S23','Samsung','Phone',899,60,'{"storage":"256GB"}','1.jpg'),
-(4,'Galaxy A54','Samsung','Phone',499,80,'{"battery":"5000"}','1.jpg'),
-(5,'Xiaomi 13','Xiaomi','Phone',699,70,'{"color":"green"}','1.jpg'),
-(6,'Pixel 7','Google','Phone',599,55,'{"camera":"50MP"}','1.jpg'),
-(7,'OnePlus 11','OnePlus','Phone',649,45,'{"ram":"16GB"}','1.jpg'),
-(8,'Oppo Find X5','Oppo','Phone',729,35,'{"fast_charge":true}','1.jpg'),
-(9,'Huawei P50','Huawei','Phone',679,30,'{"camera":"Leica"}','1.jpg'),
-(10,'Realme GT','Realme','Phone',499,75,'{"gaming":true}','1.jpg'),
-
-(11,'MacBook Air','Apple','Laptop',1199,25,'{"chip":"M2"}','1.jpg'),
-(12,'Dell XPS','Dell','Laptop',1099,20,'{"ram":"16GB"}','1.jpg'),
-(13,'HP Spectre','HP','Laptop',1249,15,'{"touch":true}','1.jpg'),
-(14,'Lenovo ThinkPad','Lenovo','Laptop',999,18,'{"business":true}','1.jpg'),
-(15,'Asus ROG','Asus','Laptop',1399,12,'{"gaming":true}','1.jpg'),
-
-(16,'iPad Pro','Apple','Tablet',999,30,'{"screen":"12.9"}','1.jpg'),
-(17,'Galaxy Tab','Samsung','Tablet',849,35,'{"pen":true}','1.jpg'),
-(18,'Sony XM5','Sony','Headphones',349,100,'{"noise_cancel":true}','1.jpg'),
-(19,'AirPods Pro','Apple','Earbuds',249,150,'{"anc":true}','1.jpg'),
-(20,'JBL Flip','JBL','Speaker',129,90,'{"waterproof":true}','1.jpg');
+(1,'iPhone 14','Apple','Phone',999,50,'{"storage":"128GB", "color":"Midnight", "display":"6.1-inch Super Retina", "chip":"A15 Bionic"}','iPhone_14_Blue_PDP_Image_Position-1A_Blue_Color_TH_550x_ljepgj.webp'),
+(2,'iPhone 13','Apple','Phone',799,40,'{"storage":"128GB", "color":"Blue", "display":"6.1-inch Super Retina", "chip":"A15 Bionic"}','iPhone_13_Midnight_PDP_Position-1A_Midnight_Color__TH_550x_cxee8p.webp'),
+(3,'Galaxy S23','Samsung','Phone',899,60,'{"storage":"256GB", "ram":"8GB", "display":"6.1-inch Dynamic AMOLED", "refresh_rate":"120Hz"}','galaxy-s23-revibe_gru7jo.webp'),
+(4,'Galaxy A54','Samsung','Phone',499,80,'{"storage":"128GB", "battery":"5000mAh", "display":"6.4-inch Super AMOLED", "water_resistance":"IP67"}','galaxy-a54-revibe_dy6t1x.webp'),
+(5,'Xiaomi 13','Xiaomi','Phone',699,70,'{"storage":"256GB", "ram":"12GB", "camera":"50MP Leica", "fast_charging":"67W"}','xiaomi13-compasia_zodymh.webp'),
+(6,'Pixel 7','Google','Phone',599,55,'{"storage":"128GB", "chip":"Google Tensor G2", "camera":"50MP Octa PD", "os":"Android 13"}','pixel7-android_police_tysnis.avif'),
+(7,'OnePlus 11','OnePlus','Phone',649,45,'{"storage":"256GB", "ram":"16GB", "chip":"Snapdragon 8 Gen 2", "charging":"80W SUPERVOOC"}','OnePlus11-OnePlus_jrj3zz.png'),
+(8,'Oppo Find X5','Oppo','Phone',729,35,'{"storage":"256GB", "camera":"50MP Dual", "fast_charge":true, "npu":"MariSilicon X"}','OppoFindX5-Siamphone_msepgj.jpg'),
+(9,'Huawei P50','Huawei','Phone',679,30,'{"storage":"256GB", "camera":"True-Chroma 50MP", "zoom":"100x Digital", "display":"6.5-inch"}','HuaweiP50-HuaweiGlobal_xdnzpz.png'),
+(10,'Realme GT','Realme','Phone',499,75,'{"storage":"128GB", "gaming_mode":true, "cooling":"Stainless Steel Vapour", "refresh_rate":"120Hz"}','RealMeGT-Siamphone_o8z8fz.jpg'),
+(11,'MacBook Air','Apple','Laptop',1199,25,'{"chip":"M2", "ram":"8GB", "storage":"256GB SSD", "display":"13.6-inch Liquid Retina"}','macbook-air-apple_gai2ky.jpg'),
+(12,'Dell XPS','Dell','Laptop',1099,20,'{"cpu":"Intel Core i7", "ram":"16GB", "storage":"512GB SSD", "display":"13.4-inch FHD+"}','DellXPS-amazon_spxieb.jpg'),
+(13,'HP Spectre','HP','Laptop',1249,15,'{"cpu":"Intel Core i7", "ram":"16GB", "touch":true, "convertible":true, "display":"4K OLED"}','HPSpectre-HP_xl3xim.jpg'),
+(14,'Lenovo ThinkPad','Lenovo','Laptop',999,18,'{"cpu":"AMD Ryzen 7", "ram":"16GB", "keyboard":"Backlit", "security":"Fingerprint Reader"}','LenovoThinkPad-Lenovo_itwyyj.avif'),
+(15,'Asus ROG','Asus','Laptop',1399,12,'{"gpu":"RTX 4060", "ram":"16GB", "refresh_rate":"165Hz", "storage":"1TB SSD", "gaming":true}','AsusROG-Asus_qstk7j.png'),
+(16,'iPad Pro','Apple','Tablet',999,30,'{"screen":"12.9-inch", "display":"Liquid Retina XDR", "chip":"M2", "cellular":false}','IpadPro-Apple_uefzrc.jpg'),
+(17,'Galaxy Tab','Samsung','Tablet',849,35,'{"screen":"11-inch", "pen_included":true, "storage":"128GB", "display":"TFT LCD"}','GalaxyTab-Samsung_qsvc9z.png'),
+(18,'Sony XM5','Sony','Headphones',349,100,'{"noise_cancel":true, "battery_life":"30h", "connection":"Bluetooth 5.2", "case_included":true}','SonyXM5-Sony_ltteif.avif'),
+(19,'AirPods Pro','Apple','Earbuds',249,150,'{"anc":true, "spatial_audio":true, "chip":"H2", "water_resistance":"IPX4"}','AirpodsPro-AppleSupport_fhnoxy.png'),
+(20,'JBL Flip','JBL','Speaker',129,90,'{"waterproof":true, "ip_rating":"IPX7", "play_time":"12h", "output_power":"20W"}','JBLFlip6-JBLStoreThailand_fxjehs.webp');
 
 -- CUSTOMER (10)
 INSERT INTO customer VALUES
@@ -199,6 +197,6 @@ WITH
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON papaya.*
 TO 'PapayaUser'@'localhost';
-
+ 
 -- Apply changes
 FLUSH PRIVILEGES;
