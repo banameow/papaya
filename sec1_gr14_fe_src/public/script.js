@@ -263,31 +263,97 @@ async function loadProductDetail() {
 
   try {
     const res = await fetch(`${BASE_SERVER_URL}/api/products/${id}`);
-    if (!res.ok) { location.href = "notfound.html"; return; }
+    if (!res.ok) {
+      location.href = "notfound.html";
+      return;
+    }
+
     const p = await res.json();
 
-    // populate ข้อมูล
+    // 1. Update the Main Text & Price
     document.getElementById("productName").textContent = p.name;
-    document.getElementById("productPrice").textContent = Number(p.price).toLocaleString();
-    document.getElementById("mainImage").src =
-      `https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${p.image_url}`;
-    document.title = `Papaya – ${p.name}`;
+    document.getElementById("productPrice").textContent =
+      "$" + Number(p.price).toLocaleString();
+    document.title = `Papaya - ${p.name}`;
 
-    // ถ้า description เป็น JSON object → สร้าง spec table
-    const desc = typeof p.description === "string" ? JSON.parse(p.description) : p.description;
+    // 2. Hide the mock "Old Price" and "Save" elements since your DB doesn't use them
+    const oldPriceEl = document.getElementById("productOldPrice");
+    const saveEl = document.getElementById("productSave");
+    if (oldPriceEl) oldPriceEl.style.display = "none";
+    if (saveEl) saveEl.style.display = "none";
+
+    // --- NEW: Stock Management ---
+    const stockEl = document.getElementById("productStock");
+    // Target the add to cart button using its onclick attribute
+    const addToCartBtn = document.querySelector(
+      'button[onclick="addToCart()"]',
+    );
+    const qtyControl = document.querySelector(".qty-control");
+
+    if (stockEl) {
+      if (p.stock_quantity > 0) {
+        stockEl.textContent = `In Stock: ${p.stock_quantity}`;
+        stockEl.classList.add("text-success"); // Make it green
+
+        if (addToCartBtn) {
+          addToCartBtn.disabled = false;
+        }
+      } else {
+        stockEl.textContent = "Out of Stock";
+        stockEl.classList.add("text-danger"); // Make it red
+
+        if (addToCartBtn) {
+          addToCartBtn.disabled = true;
+          // Change the appearance to look disabled
+          addToCartBtn.classList.replace("btn-dark", "btn-secondary");
+          addToCartBtn.innerHTML =
+            '<i class="bi bi-x-circle me-2"></i>OUT OF STOCK';
+        }
+
+        // Optional: Fade out the quantity selector so they know they can't use it
+        if (qtyControl) qtyControl.style.opacity = "0.5";
+      }
+    }
+    // -----------------------------
+
+    // 3. Update the Main Image
+    const fullImageUrl = `https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${p.image_url}`;
+    document.getElementById("mainImage").src = fullImageUrl;
+
+    // 4. Handle the mock Thumbnails
+    const thumbnails = document.querySelectorAll(".col-4 img");
+    thumbnails.forEach((img) => {
+      img.src = fullImageUrl;
+    });
+
+    // 5. Build the Specifications Table dynamically from your JSON column
+    const desc =
+      typeof p.description === "string"
+        ? JSON.parse(p.description)
+        : p.description;
     const tbody = document.querySelector(".spec-table tbody");
-    tbody.innerHTML = "";
+    tbody.innerHTML = ""; // Clears out the hardcoded specs
+
+    // Let's add the Brand and Category from your DB first!
+    tbody.innerHTML += `<tr><td class="fw-bold">Brand</td><td>${p.brand}</td></tr>`;
+    tbody.innerHTML += `<tr><td class="fw-bold">Category</td><td>${p.category}</td></tr>`;
+
+    // Loop through the JSON description object
     Object.entries(desc).forEach(([key, val]) => {
+      // Capitalize the key and remove underscores
+      const cleanKey =
+        key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ");
+
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${key}</td><td>${val}</td>`;
+      tr.innerHTML = `<td>${cleanKey}</td><td>${val}</td>`;
       tbody.appendChild(tr);
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error loading product details:", err);
   }
 }
 
-// ------------------------ cart.html --------------------------
+// #region ------------------------ cart.html --------------------------
 function getCart() {
   return JSON.parse(localStorage.getItem("cart") || "[]");
 }
@@ -297,37 +363,50 @@ function saveCart(cart) {
 }
 function updateCartBadge() {
   const count = getCart().reduce((sum, i) => sum + i.qty, 0);
-  document.querySelectorAll("#cartCount").forEach(el => el.textContent = count);
+  document
+    .querySelectorAll("#cartCount")
+    .forEach((el) => (el.textContent = count));
 }
 
 function addToCart() {
-  const id    = new URLSearchParams(location.search).get("id");
-  const name  = document.getElementById("productName").textContent;
-  const price = parseInt(document.getElementById("productPrice").textContent.replace(/,/g, ""));
-  const qty   = parseInt(document.querySelector(".qty-val").value);
-  const img   = document.getElementById("mainImage").src;
+  const id = new URLSearchParams(location.search).get("id");
+  const name = document.getElementById("productName").textContent;
+
+  // Extract ONLY numbers and decimals to prevent NaN errors
+  const rawPriceStr = document.getElementById("productPrice").textContent;
+  const price = parseFloat(rawPriceStr.replace(/[^0-9.]/g, "")) || 0;
+
+  const qty = parseInt(document.querySelector(".qty-val").value) || 1;
+  const img = document.getElementById("mainImage").src;
 
   const cart = getCart();
-  const existing = cart.find(i => i.id === id);
-  if (existing) existing.qty += qty;
-  else cart.push({ id, name, price, qty, img });
+  const existing = cart.find((i) => i.id === id);
+
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({ id, name, price, qty, img });
+  }
+
   saveCart(cart);
 
   const msg = document.getElementById("cartSuccess");
-  msg.classList.remove("d-none");
-  setTimeout(() => msg.classList.add("d-none"), 2000);
+  if (msg) {
+    msg.classList.remove("d-none");
+    setTimeout(() => msg.classList.add("d-none"), 2000);
+  }
 }
 
-// render cart items ใน cart.html
 function renderCart() {
   const cart = getCart();
   const section = document.querySelector("section[aria-label='Cart items']");
   if (!section) return;
 
   section.innerHTML = "";
-  cart.forEach(item => {
+  cart.forEach((item) => {
     const article = document.createElement("article");
-    article.className = "cart-item d-flex align-items-center gap-3 bg-light rounded-4 p-3 mb-3";
+    article.className =
+      "cart-item d-flex align-items-center gap-3 bg-light rounded-4 p-3 mb-3";
     article.dataset.price = item.price;
     article.dataset.id = item.id;
     article.innerHTML = `
@@ -355,24 +434,39 @@ function renderCart() {
 function removeCartItem(btn) {
   const article = btn.closest("article");
   const id = article.dataset.id;
-  const cart = getCart().filter(i => i.id !== id);
+  const cart = getCart().filter((i) => i.id !== id);
   saveCart(cart);
   renderCart();
 }
 
 function updateSummary() {
   const cart = getCart();
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-  const discount = parseInt(document.getElementById("cart-discount")?.dataset.discount || 0);
-  document.getElementById("cart-subtotal").textContent = subtotal.toLocaleString();
-  document.getElementById("cart-total").textContent = (subtotal - discount).toLocaleString();
+
+  // Safely calculate the subtotal
+  const subtotal = cart.reduce(
+    (sum, i) => sum + (i.price || 0) * (i.qty || 1),
+    0,
+  );
+
+  const discountEl = document.getElementById("cart-discount");
+  const discount = parseInt(discountEl?.dataset?.discount || 0);
+
+  // Null-checks prevent the script from crashing if an ID is missing in the HTML
+  const subtotalEl = document.getElementById("cart-subtotal");
+  const totalEl = document.getElementById("cart-total");
+
+  if (subtotalEl) subtotalEl.textContent = subtotal.toLocaleString();
+  if (totalEl) totalEl.textContent = (subtotal - discount).toLocaleString();
 }
 
 function applyCoupon() {
-  const code = document.getElementById("couponInput").value.trim().toUpperCase();
-  const msg  = document.getElementById("couponMsg");
+  const code = document
+    .getElementById("couponInput")
+    .value.trim()
+    .toUpperCase();
+  const msg = document.getElementById("couponMsg");
   const discountEl = document.getElementById("cart-discount");
-  const COUPONS = { "PAPAYA10": 100, "SAVE500": 500 }; // ตัวอย่าง
+  const COUPONS = { PAPAYA10: 100, SAVE500: 500 }; // example
 
   if (COUPONS[code]) {
     discountEl.textContent = COUPONS[code].toLocaleString();
@@ -385,25 +479,50 @@ function applyCoupon() {
   }
   updateSummary();
 }
-function checkout() {
-  localStorage.removeItem("cart");
-  updateCartBadge();
-  
-  location.href = "index.html";
-}
-function checkout() {
-  localStorage.removeItem("cart");
-  updateCartBadge();
-  alert("Order placed successfully! 🎉");
-  location.href = "index.html";
+
+async function checkout() {
+  const cart = getCart();
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  try {
+    // 1. Send the cart data to our new backend route
+    const res = await fetch(`${BASE_SERVER_URL}/api/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart: cart }),
+    });
+
+    const data = await res.json();
+
+    // 2. Check if the backend threw an error (like out-of-stock)
+    if (!res.ok) {
+      throw new Error(data.message || "Checkout failed");
+    }
+
+    // 3. If successful, clear the cart and redirect
+    localStorage.removeItem("cart");
+    updateCartBadge();
+
+    alert("Order placed successfully! 🎉 Stock has been updated.");
+    location.href = "index.html";
+  } catch (err) {
+    console.error(err);
+    alert("Checkout failed: " + err.message);
+  }
 }
 
 function initQtyButtons() {
-  document.querySelectorAll(".cart-item").forEach(article => {
+  document.querySelectorAll(".cart-item").forEach((article) => {
     const minus = article.querySelector(".qty-minus");
-    const plus  = article.querySelector(".qty-plus");
+    const plus = article.querySelector(".qty-plus");
     const input = article.querySelector(".qty-val");
-    const id    = article.dataset.id;
+    const id = article.dataset.id;
 
     plus.onclick = () => {
       input.value = +input.value + 1;
@@ -420,7 +539,7 @@ function initQtyButtons() {
 
 function updateCartQty(id, qty) {
   const cart = getCart();
-  const item = cart.find(i => i.id === id);
+  const item = cart.find((i) => i.id === id);
   if (item) item.qty = qty;
   saveCart(cart);
   updateSummary();
@@ -429,19 +548,24 @@ function updateCartQty(id, qty) {
 // ------------------------ DOMContentLoaded --------------------------
 document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
-  
+
   // detail page
   if (document.getElementById("productName")) loadProductDetail();
 
-  // cart page  
+  // cart page
   if (document.querySelector("section[aria-label='Cart items']")) renderCart();
 
   // qty buttons on detail page
   const minus = document.querySelector(".qty-minus");
-  const plus  = document.querySelector(".qty-plus");
+  const plus = document.querySelector(".qty-plus");
   const input = document.querySelector(".qty-val");
   if (minus && plus && input && !document.querySelector(".cart-item")) {
-    plus.onclick  = () => { input.value = +input.value + 1; };
-    minus.onclick = () => { if (+input.value > 1) input.value = +input.value - 1; };
+    plus.onclick = () => {
+      input.value = +input.value + 1;
+    };
+    minus.onclick = () => {
+      if (+input.value > 1) input.value = +input.value - 1;
+    };
   }
 });
+// #endregion

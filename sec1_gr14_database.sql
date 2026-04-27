@@ -2,9 +2,9 @@
 -- FULL SETUP (DDL + DML)
 -- =========================
 
-DROP DATABASE IF EXISTS papaya;
-CREATE DATABASE papaya;
-USE papaya;
+DROP DATABASE IF EXISTS sec1_gr14_database;
+CREATE DATABASE sec1_gr14_database;
+USE sec1_gr14_database;
 
 -- =========================
 -- TABLES
@@ -193,9 +193,9 @@ WITH
   MAX_CONNECTIONS_PER_HOUR 1000
   MAX_USER_CONNECTIONS 1000;
 
--- Grant schema privileges on papaya database
+-- Grant schema privileges on sec1_gr14_database database
 GRANT SELECT, INSERT, UPDATE, DELETE
-ON papaya.*
+ON sec1_gr14_database.*
 TO 'PapayaUser'@'localhost';
  
 -- Apply changes

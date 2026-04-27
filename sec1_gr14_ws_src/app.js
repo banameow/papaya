@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   user: "PapayaUser",
   password: "PapayaUser_123",
-  database: "papaya",
+  database: "sec1_gr14_database",
 });
 
 connection.connect(function (err) {
@@ -29,6 +29,16 @@ connection.connect(function (err) {
 // #endregion
 
 // #region ===================== API =====================
+
+router.get("/api/exclusive/products", (req, res) => {
+  let sql = "select * from product limit 4;";
+
+  connection.query(sql, (err, results) => {
+    if (err) throw err;
+
+    return res.send(results);
+  });
+});
 
 router.post("/api/add", async (req, res) => {
   try {
@@ -58,7 +68,7 @@ router.post("/api/add", async (req, res) => {
       image_url,
     ];
 
-    await connection.execute(sql, values);
+    await connection.promise().execute(sql, values);
 
     res.json({ message: "Product added successfully" });
   } catch (err) {
@@ -67,63 +77,65 @@ router.post("/api/add", async (req, res) => {
   }
 });
 
-router.get("/api/exclusive/products", (req, res) => {
-  let sql = "select * from product limit 4;";
+router.get("/api/products/:id", (req, res) => {
+  connection.query(
+    "SELECT * FROM product WHERE id = ?",
+    [req.params.id],
+    (err, results) => {
+      if (err) return res.status(500).json({ message: err.message });
 
-  connection.query(sql, (err, results) => {
-    if (err) throw err;
+      if (results.length === 0) {
+        return res.status(404).json({ message: "Not found" });
+      }
 
-    return res.send(results);
-  });
+      return res.json(results[0]);
+    },
+  );
 });
 
-router.get("/api/cart/:userId", async (req, res) => {
+router.post("/api/checkout", async (req, res) => {
   try {
-    const [rows] = await connection.execute(
-      `SELECT c.*, p.name, p.price, p.image_url 
-       FROM cart c JOIN product p ON c.product_id = p.id
-       WHERE c.user_id = ?`,
-      [req.params.userId]
-    );
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+    const { cart } = req.body;
 
-router.post("/api/cart", async (req, res) => {
-  try {
-    const { user_id, product_id, quantity } = req.body;
-    await connection.execute(
-      `INSERT INTO cart (user_id, product_id, quantity)
-       VALUES (?, ?, ?)
-       ON DUPLICATE KEY UPDATE quantity = quantity + ?`,
-      [user_id, product_id, quantity, quantity]
-    );
-    res.json({ message: "Added to cart" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+    if (!cart || cart.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
 
-router.delete("/api/cart/:cartId", async (req, res) => {
-  try {
-    await connection.execute("DELETE FROM cart WHERE id = ?", [req.params.cartId]);
-    res.json({ message: "Removed from cart" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+    // Use .promise() locally so we can safely use async/await for the transaction
+    const db = connection.promise();
 
-router.get("/api/products/:id", async (req, res) => {
-  try {
-    const [rows] = await connection.execute(
-      "SELECT * FROM product WHERE id = ?",
-      [req.params.id]
-    );
-    if (rows.length === 0) return res.status(404).json({ message: "Not found" });
-    res.json(rows[0]);
+    await db.query("START TRANSACTION");
+
+    for (let i = 0; i < cart.length; i++) {
+      const item = cart[i];
+
+      const [rows] = await db.execute(
+        "SELECT stock_quantity, name FROM product WHERE id = ?",
+        [item.id],
+      );
+
+      if (rows.length === 0) {
+        throw new Error(`Product ID ${item.id} not found in database.`);
+      }
+
+      if (rows[0].stock_quantity < item.qty) {
+        throw new Error(
+          `Not enough stock for ${rows[0].name}. Only ${rows[0].stock_quantity} left!`,
+        );
+      }
+
+      await db.execute(
+        "UPDATE product SET stock_quantity = stock_quantity - ? WHERE id = ?",
+        [item.qty, item.id],
+      );
+    }
+
+    await db.query("COMMIT");
+    res.json({ message: "Checkout successful, stock updated!" });
   } catch (err) {
+    // Rollback if any item fails
+    await connection.promise().query("ROLLBACK");
+    console.error("Checkout error:", err);
     res.status(500).json({ message: err.message });
   }
 });

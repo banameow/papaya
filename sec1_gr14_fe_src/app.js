@@ -25,6 +25,7 @@ router.get("/add-product.html", (req, res) => {
 router.get("/team.html", (req, res) => {
   res.sendFile(`${__dirname}/html/team.html`);
 });
+
 router.get("/detail.html", (req, res) => {
   res.sendFile(`${__dirname}/html/detail.html`);
 });
