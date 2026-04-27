@@ -39,7 +39,6 @@
 │   │   ├── product-management.html     # Admin – product list with edit/delete
 │   │   ├── products.html               # Public product listing page
 │   │   ├── search.html                 # Product search page (results on demand)
-│   │   ├── sign-up.html                # User registration page
 │   │   └── team.html                   # Team members page
 │   ├── public/
 │   │   ├── script.js                   # Frontend script for interactive features
