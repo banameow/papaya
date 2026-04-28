@@ -1,4 +1,4 @@
-const BASE_SERVER_URL = "http://localhost:5001";
+const BASE_SERVER_URL = "https://papaya-backend-tn46.onrender.com";
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;

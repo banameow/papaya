@@ -18,6 +18,7 @@ dotenv.config()
 // #region ===================== Database Connection =====================
 var connection = mysql.createConnection({
   host: process.env.MYSQL_HOST || "localhost",
+  port: process.env.MYSQL_PORT || 3306,
   user: process.env.MYSQL_USERNAME || "PapayaUser",
   password: process.env.MYSQL_PASSWORD || "PapayaUser_123",
   database: process.env.MYSQL_DATABASE || "sec1_gr14_database",
@@ -502,7 +503,7 @@ router.post("/api/auth/login", async (req, res) => {
 // (Note: Fails only if NewsAPI rejects the key or is unreachable)
 // ======================================================================
 router.get("/api/news", async (req, res) => {
-  const API_KEY = "8889f4a6af0149889ac997eb879547bb";
+  const API_KEY = process.env.API_KEY || "8889f4a6af0149889ac997eb879547bb";
 
   try {
     let newsReq = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${API_KEY}`;
