@@ -340,7 +340,7 @@ async function loadCarouselNews() {
 }
 
 loadExclusiveProduct();
-// loadCarouselNews(); // Do comment when developing, so it not waste the public request :>
+loadCarouselNews(); // Do comment when developing, so it not waste the public request :>
 
 // ------------------------ products.html --------------------------
 async function loadAllProducts() {
