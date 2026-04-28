@@ -1,6 +1,7 @@
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
+const dotenv = require("dotenv")
 
 const app = express();
 const router = express.Router();
@@ -12,13 +13,14 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 app.use(router);
+dotenv.config()
 
 // #region ===================== Database Connection =====================
 var connection = mysql.createConnection({
-  host: "localhost",
-  user: "PapayaUser",
-  password: "PapayaUser_123",
-  database: "sec1_gr14_database",
+  host: process.env.MYSQL_HOST || "localhost",
+  user: process.env.MYSQL_USERNAME || "PapayaUser",
+  password: process.env.MYSQL_PASSWORD || "PapayaUser_123",
+  database: process.env.MYSQL_DATABASE || "sec1_gr14_database",
 });
 
 connection.connect(function (err) {
@@ -524,7 +526,7 @@ router.get("/api/news", async (req, res) => {
 // #endregion API
 
 // ===================== App Listen =====================
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);

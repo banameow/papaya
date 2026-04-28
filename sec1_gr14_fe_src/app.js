@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const dotenv = require("dotenv")
 
 const app = express();
 const router = express.Router();
@@ -8,6 +9,7 @@ const router = express.Router();
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(router);
+dotenv.config()
 
 // ===================== Pages Routing =====================
 router.get(["/", "/index.html"], (req, res) => {
@@ -61,7 +63,7 @@ router.use((req, res, next) => {
 });
 
 // ===================== App Listen =====================
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Server is running on port", PORT);
