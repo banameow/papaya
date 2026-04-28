@@ -177,7 +177,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let imageUrl = "";
 
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.innerHTML;
+
       try {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Uploading...';
+
         if (file) {
           const formData = new FormData();
           formData.append("file", file);
@@ -238,6 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error(err);
         errorDiv.textContent = "Something went wrong";
         errorDiv.classList.remove("d-none");
+      } finally {
+        // This runs whether it succeeds or fails, so the button never gets stuck!
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
       }
     });
   }
@@ -756,7 +766,14 @@ function triggerDeleteModal(id, name) {
 async function confirmDelete() {
   if (!productToDelete) return;
 
+  // Find the button inside the modal
+  const deleteBtn = document.querySelector('#deleteModal .btn-danger');
+  const originalBtnText = deleteBtn.innerHTML;
+
   try {
+    deleteBtn.disabled = true;
+    deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Deleting...';
+
     const res = await fetch(
       `${BASE_SERVER_URL}/api/products/${productToDelete}`,
       {
@@ -771,6 +788,10 @@ async function confirmDelete() {
   } catch (err) {
     console.error(err);
     alert("Error deleting product. It may be tied to existing orders.");
+
+    // Unlock the button if it fails
+    deleteBtn.disabled = false;
+    deleteBtn.innerHTML = originalBtnText;
   }
 }
 // #endregion
@@ -837,7 +858,13 @@ async function loadEditForm() {
     const errorDiv = document.getElementById("editError");
     errorDiv.classList.add("d-none");
 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+
     try {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Updating...';
+
       // FRONTEND VALIDATION
       const priceVal = parseFloat(document.getElementById("edit-price").value);
       const stockVal = parseInt(document.getElementById("edit-stock").value);
@@ -905,6 +932,11 @@ async function loadEditForm() {
       console.error(err);
       errorDiv.textContent = err.message;
       errorDiv.classList.remove("d-none");
+
+      // If there is an error, we need to unlock the button so they can try again.
+      // (If it succeeds, the page redirects anyway, so we don't need a finally block here)
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
     }
   });
 }
