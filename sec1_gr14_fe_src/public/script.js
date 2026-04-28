@@ -1,5 +1,80 @@
 const BASE_SERVER_URL = "http://localhost:5001";
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null;
+}
+
+function checkAdminAuth() {
+  // List of pages that require admin access
+  const adminPages = [
+    "product-management.html",
+    "add-product.html",
+    "edit-product.html",
+  ];
+
+  // Get the current page filename
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (adminPages.includes(currentPage)) {
+    const role = getCookie("papaya_role");
+
+    if (role !== "admin") {
+      alert("Unauthorized Access! Redirecting to login.");
+      window.location.href = "login.html";
+    }
+  }
+}
+
+function updateAuthUI() {
+  const role = getCookie("papaya_role");
+  const username = getCookie("papaya_user");
+
+  // If the user is recognized as an admin based on the cookie
+  if (role === "admin") {
+    // 1. If they try to go to the login page, redirect them to the panel immediately
+    if (window.location.pathname.includes("login.html")) {
+      window.location.href = "product-management.html";
+      return;
+    }
+
+    // 2. Find all "log in" links on the current page and change them to "Admin Panel"
+    document.querySelectorAll('a[href="login.html"]').forEach((link) => {
+      link.href = "product-management.html";
+      link.innerHTML = `<i class="bi bi-person-check-fill me-1"></i>${username} Panel`;
+      link.classList.replace("btn-outline-dark", "btn-dark"); // Highlight it
+    });
+
+    // 3. Create a Logout button and place it in the top navigation bar
+    const topbarDiv = document.querySelector(
+      ".papaya-topbar .d-flex.align-items-center.gap-2",
+    );
+    if (topbarDiv && !document.getElementById("logoutBtn")) {
+      const logoutBtn = document.createElement("button");
+      logoutBtn.id = "logoutBtn";
+      logoutBtn.className = "btn btn-outline-danger btn-sm rounded-pill px-3";
+      logoutBtn.innerHTML = `<i class="bi bi-box-arrow-right"></i>`;
+      logoutBtn.title = "Logout";
+      logoutBtn.onclick = logoutAdmin;
+
+      // Insert it right before the shopping cart icon
+      const cartIcon = topbarDiv.querySelector('a[href="cart.html"]');
+      topbarDiv.insertBefore(logoutBtn, cartIcon);
+    }
+  }
+}
+
+function logoutAdmin() {
+  // Erase the cookies by setting their max-age to 0
+  document.cookie = "papaya_user=; max-age=0; path=/";
+  document.cookie = "papaya_role=; max-age=0; path=/";
+
+  alert("Logged out successfully.");
+  window.location.href = "index.html"; // Send them back to the public home page
+}
+
 // ------------------------ index.html --------------------------
 function createProductCard(product) {
   const div = document.createElement("div");
@@ -70,6 +145,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const category = document.getElementById("add-category").value.trim();
       const price = parseFloat(document.getElementById("add-price").value) || 0;
       const stock = parseInt(document.getElementById("add-stock").value) || 0;
+
+      if (price < 0) {
+        errorDiv.textContent = "Price cannot be a negative number!";
+        errorDiv.classList.remove("d-none");
+        return; // Stop the function
+      }
+      if (stock < 0) {
+        errorDiv.textContent = "Stock quantity cannot be a negative number!";
+        errorDiv.classList.remove("d-none");
+        return; // Stop the function
+      }
 
       // --------- extract specs ----------
       const specRows = document.querySelectorAll(".spec-row");
@@ -256,6 +342,54 @@ async function loadCarouselNews() {
 loadExclusiveProduct();
 // loadCarouselNews(); // Do comment when developing, so it not waste the public request :>
 
+// ------------------------ products.html --------------------------
+async function loadAllProducts() {
+  const container = document.getElementById("all-products-container");
+  if (!container) return; // Only run if we are on the products.html page
+
+  try {
+    const res = await fetch(`${BASE_SERVER_URL}/api/products`);
+    if (!res.ok) throw new Error("Failed to fetch products");
+
+    const products = await res.json();
+    container.innerHTML = ""; // Clear the loading spinner
+
+    // 1. Group the products by their category
+    const categories = {};
+    products.forEach((p) => {
+      const cat = p.category || "Other";
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(p);
+    });
+
+    // 2. Loop through each category and build a section
+    Object.keys(categories).forEach((cat) => {
+      // Create the section wrapper
+      const section = document.createElement("section");
+      section.className = "mb-5 fade-in";
+
+      // Add the Category Title
+      section.innerHTML = `
+        <h3 class="fw-bold mb-3 text-capitalize" style="font-size:1.1rem">${cat}s</h3>
+        <div class="row g-3 product-row"></div>
+      `;
+
+      const row = section.querySelector(".product-row");
+
+      // Loop through the products in this category and draw the cards
+      categories[cat].forEach((p) => {
+        row.appendChild(createProductCard(p));
+      });
+
+      // Add the finished section to the page
+      container.appendChild(section);
+    });
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<div class="text-danger text-center py-5">Failed to load products. Make sure your server is running!</div>`;
+  }
+}
+
 // ------------------------ detail.html --------------------------
 async function loadProductDetail() {
   const id = new URLSearchParams(location.search).get("id");
@@ -350,6 +484,29 @@ async function loadProductDetail() {
     });
   } catch (err) {
     console.error("Error loading product details:", err);
+  }
+}
+
+// ------------------------ search.html --------------------------
+async function loadSearchCategories() {
+  const categorySelect = document.getElementById("search-category");
+  if (!categorySelect) return; // Only run if we are on the search page
+
+  try {
+    const res = await fetch(`${BASE_SERVER_URL}/api/categories`);
+    if (!res.ok) throw new Error("Failed to load categories");
+
+    const categories = await res.json();
+
+    // Loop through the database categories and create an <option> for each
+    categories.forEach((cat) => {
+      const option = document.createElement("option");
+      option.value = cat; // This will send the exact DB value (e.g., "Phone") to the search API
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+  } catch (err) {
+    console.error("Error loading categories:", err);
   }
 }
 
@@ -545,8 +702,219 @@ function updateCartQty(id, qty) {
   updateSummary();
 }
 
+// #endregion
+
+// #region ------------------------ Admin Management --------------------------
+let productToDelete = null; // Global variable to hold the ID for the delete modal
+
+async function loadAdminProducts() {
+  const grid = document.getElementById("adminProductGrid");
+  if (!grid) return;
+
+  try {
+    const res = await fetch(`${BASE_SERVER_URL}/api/products`);
+    const products = await res.json();
+    grid.innerHTML = "";
+
+    products.forEach((p) => {
+      const div = document.createElement("div");
+      div.className = "col-6 col-md-3";
+      div.innerHTML = `
+        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card">
+          <img src="https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${p.image_url}"
+               alt="${p.name}" class="product-card-img rounded-3 bg-white" style="object-fit:contain;"/>
+          <div class="card-body px-1 pb-1 pt-2">
+            <p class="mb-1" style="font-size:.85rem;font-weight:600">${p.name}</p>
+            <span class="text-price fw-bold">$${p.price}</span>
+            <div class="text-muted small">Stock: ${p.stock_quantity}</div>
+          </div>
+          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
+            <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="location.href='edit-product.html?id=${p.id}'">Edit</button>
+            <button class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="triggerDeleteModal(${p.id}, '${p.name.replace(/'/g, "\\'")}')">Delete</button>
+          </div>
+        </article>
+      `;
+      grid.appendChild(div);
+    });
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = `<div class="text-danger text-center">Failed to load inventory.</div>`;
+  }
+}
+
+// Opens the Bootstrap modal and sets the global variable
+function triggerDeleteModal(id, name) {
+  productToDelete = id;
+  document.getElementById("deleteProductId").textContent = id;
+  document.getElementById("deleteProductName").textContent = name;
+
+  const modal = new bootstrap.Modal(document.getElementById("deleteModal"));
+  modal.show();
+}
+
+// Actually executes the delete fetch request
+async function confirmDelete() {
+  if (!productToDelete) return;
+
+  try {
+    const res = await fetch(
+      `${BASE_SERVER_URL}/api/products/${productToDelete}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    if (!res.ok) throw new Error("Failed to delete product");
+
+    alert("Product deleted successfully!");
+    location.reload(); // Refresh the page to show updated list
+  } catch (err) {
+    console.error(err);
+    alert("Error deleting product. It may be tied to existing orders.");
+  }
+}
+// #endregion
+
+// #region ------------------------ Edit Product --------------------------
+async function loadEditForm() {
+  const form = document.getElementById("editProductForm");
+  if (!form) return;
+
+  const id = new URLSearchParams(location.search).get("id");
+  if (!id) {
+    alert("No product ID provided!");
+    location.href = "product-management.html";
+    return;
+  }
+
+  // 1. Fetch existing data and pre-fill the form
+  try {
+    const res = await fetch(`${BASE_SERVER_URL}/api/products/${id}`);
+    if (!res.ok) throw new Error(`Backend returned status: ${res.status}`);
+
+    const p = await res.json();
+
+    document.getElementById("edit-name").value = p.name;
+    document.getElementById("edit-brand").value = p.brand;
+    document.getElementById("edit-category").value = p.category;
+    document.getElementById("edit-price").value = p.price;
+    document.getElementById("edit-stock").value = p.stock_quantity;
+
+    // Safely handle the description JSON
+    let descObj = {};
+    if (p.description) {
+      descObj =
+        typeof p.description === "string"
+          ? JSON.parse(p.description)
+          : p.description;
+    }
+    document.getElementById("edit-desc").value = JSON.stringify(
+      descObj,
+      null,
+      2,
+    );
+
+    // Safely handle the image
+    if (p.image_url) {
+      const fullImageUrl = `https://res.cloudinary.com/dctylcksu/image/upload/q_auto/f_auto/v1777085932/${p.image_url}`;
+      document.getElementById("editImgPreview").src = fullImageUrl;
+      document.getElementById("editImgPreview").classList.remove("d-none");
+      form.dataset.oldImage = p.image_url;
+    } else {
+      form.dataset.oldImage = "";
+    }
+  } catch (err) {
+    console.error("Failed to load product details:", err);
+    alert(
+      "Failed to load product details. Check the browser console for errors.",
+    );
+  }
+
+  // 2. Handle the Submit event
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const errorDiv = document.getElementById("editError");
+    errorDiv.classList.add("d-none");
+
+    try {
+      // FRONTEND VALIDATION
+      const priceVal = parseFloat(document.getElementById("edit-price").value);
+      const stockVal = parseInt(document.getElementById("edit-stock").value);
+
+      if (isNaN(priceVal) || priceVal < 0)
+        throw new Error("Price cannot be a negative number!");
+      if (isNaN(stockVal) || stockVal < 0)
+        throw new Error("Stock quantity cannot be a negative number!");
+
+      // Parse the textarea string back into a JSON object
+      let descriptionObj = {};
+      try {
+        const descText = document.getElementById("edit-desc").value;
+        if (descText.trim() !== "") descriptionObj = JSON.parse(descText);
+      } catch (e) {
+        throw new Error(
+          'Description must be valid JSON format (e.g., {"color": "red"})',
+        );
+      }
+
+      let imageUrl = form.dataset.oldImage; // Default to old image
+      const fileInput = document.getElementById("edit-image");
+      const file = fileInput.files[0];
+
+      // If they selected a new file, upload it
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "papaya_products");
+
+        const uploadRes = await fetch(
+          "https://api.cloudinary.com/v1_1/dctylcksu/upload",
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+        const uploadData = await uploadRes.json();
+        imageUrl = `${uploadData.public_id}.${uploadData.format}`;
+      }
+
+      // Send the PUT request
+      const productData = {
+        name: document.getElementById("edit-name").value.trim(),
+        brand: document.getElementById("edit-brand").value,
+        category: document.getElementById("edit-category").value.trim(),
+        price: priceVal,
+        stock_quantity: stockVal,
+        description: descriptionObj,
+        image_url: imageUrl,
+      };
+
+      const updateRes = await fetch(`${BASE_SERVER_URL}/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(productData),
+      });
+
+      if (!updateRes.ok)
+        throw new Error("Failed to update product on the server");
+
+      alert("Product updated successfully!");
+      location.href = "product-management.html";
+    } catch (err) {
+      console.error(err);
+      errorDiv.textContent = err.message;
+      errorDiv.classList.remove("d-none");
+    }
+  });
+}
+// #endregion
+
 // ------------------------ DOMContentLoaded --------------------------
 document.addEventListener("DOMContentLoaded", () => {
+  checkAdminAuth();
+  updateAuthUI();
+
   updateCartBadge();
 
   // detail page
@@ -554,6 +922,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // cart page
   if (document.querySelector("section[aria-label='Cart items']")) renderCart();
+
+  // products page (NEW)
+  if (document.getElementById("all-products-container")) loadAllProducts();
+  // detail page
+  if (document.getElementById("productName")) loadProductDetail();
+
+  // cart page
+  if (document.querySelector("section[aria-label='Cart items']")) renderCart();
+
+  // search page
+  if (document.getElementById("search-category")) loadSearchCategories();
+
+  // admin product management page
+  if (document.getElementById("adminProductGrid")) loadAdminProducts();
+
+  // edit product page
+  if (document.getElementById("editProductForm")) loadEditForm();
 
   // qty buttons on detail page
   const minus = document.querySelector(".qty-minus");
@@ -568,4 +953,3 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 });
-// #endregion

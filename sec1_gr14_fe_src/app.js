@@ -30,9 +30,30 @@ router.get("/detail.html", (req, res) => {
   res.sendFile(`${__dirname}/html/detail.html`);
 });
 
+router.get("/search.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/search.html`)
+});
+
 router.get("/cart.html", (req, res) => {
   res.sendFile(`${__dirname}/html/cart.html`);
 });
+
+router.get("/product-management.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/product-management.html`);
+});
+
+router.get("/add-product.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/add-product.html`);
+});
+
+router.get("/edit-product.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/edit-product.html`);
+});
+
+router.get("/login.html", (req, res) => {
+  res.sendFile(`${__dirname}/html/login.html`);
+});
+
 // ===================== Not Found page =====================
 // Must be at the bottom of code
 router.use((req, res, next) => {

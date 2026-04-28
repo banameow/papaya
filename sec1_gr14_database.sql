@@ -95,16 +95,16 @@ INSERT INTO admin VALUES
 
 -- LOGIN INFO (10)
 INSERT INTO login_info VALUES
-(1,1,'user1','pass',NOW()),
-(2,2,'user2','pass',NOW()),
-(3,3,'user3','pass',NOW()),
-(4,4,'user4','pass',NOW()),
-(5,5,'user5','pass',NOW()),
-(6,6,'user6','pass',NOW()),
-(7,7,'user7','pass',NOW()),
-(8,8,'user8','pass',NOW()),
-(9,9,'user9','pass',NOW()),
-(10,10,'user10','pass',NOW());
+(1,1,'admin0','admin0pass',NOW()),
+(2,2,'admin1','admin1pass',NOW()),
+(3,3,'admin2','admin2pass',NOW()),
+(4,4,'admin3','admin3pass',NOW()),
+(5,5,'admin4','admin4pass',NOW()),
+(6,6,'admin5','admin5pass',NOW()),
+(7,7,'admin6','admin6pass',NOW()),
+(8,8,'admin7','admin7pass',NOW()),
+(9,9,'admin8','admin8pass',NOW()),
+(10,10,'admin9','admin9pass',NOW());
 
 -- PRODUCT (20)
 INSERT INTO product VALUES

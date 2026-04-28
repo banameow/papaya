@@ -36,155 +36,16 @@
 
 <!-- ══ MAIN ══════════════════════════════════════════════════════ -->
 <main class="container-fluid px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold mb-0" style="font-size:1.9rem">Product Management</h1>
+    <a href="add-product.html" class="btn btn-dark fw-bold rounded-3 px-3">
+      <i class="bi bi-plus-lg me-1"></i>ADD PRODUCT
+    </a>
+  </div>
 
-  <!-- Smartphones section -->
-  <section class="mb-4" aria-label="New Coming products">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="fw-bold mb-0" style="font-size:1.1rem">New Coming</h2>
-      <a href="add-product.html" class="btn btn-outline-dark fw-bold rounded-3 px-3">
-        <i class="bi bi-plus-lg me-1"></i>ADD
-      </a>
-    </div>
-    <div class="row g-3">
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="5">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=iPhone+17+Pro+Max"
-               alt="iPhone 17 Pro Max" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Apple iPhone 17 Pro Max 256GB Cosmic Orange</p>
-            <span class="text-price fw-bold">48,900</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="5">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="5" data-name="Apple iPhone 17 Pro Max 256GB Cosmic Orange">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="6">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=iPhone+17"
-               alt="iPhone 17" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Apple iPhone 17 256GB Sage</p>
-            <span class="text-price fw-bold">29,990</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="6">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="6" data-name="Apple iPhone 17 256GB Sage">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="7">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Galaxy+Z+Flip7"
-               alt="Samsung Galaxy Z Flip7" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Samsung Galaxy Z Flip7 (12+512GB) Coral (5G)</p>
-            <span class="text-price fw-bold">41,900</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="7">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="7" data-name="Samsung Galaxy Z Flip7 (12+512GB) Coral (5G)">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="8">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Redmi+Note+15+Pro"
-               alt="Redmi Note 15 Pro" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Xiaomi Redmi Note 15 Pro (8+256GB) Purple (5G)</p>
-            <span class="text-price fw-bold">9,999</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="8">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="8" data-name="Xiaomi Redmi Note 15 Pro (8+256GB) Purple (5G)">delete</button>
-          </div>
-        </article>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Laptops section -->
-  <section aria-label="Laptop products">
-    <div class="row g-3">
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="1">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=MSI+Vector"
-               alt="MSI Vector 16" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">MSI Vector 16 HX AI A2XWIG-078TH Cosmos Gray</p>
-            <span class="text-price fw-bold">84,990</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="1">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="1" data-name="MSI Vector 16 HX AI A2XWIG-078TH Cosmos Gray">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="2">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Acer+Swift"
-               alt="Acer Swift Go 14 AI" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Acer Swift Go 14 AI SFG14-75-5880 Blue</p>
-            <span class="text-price fw-bold">35,990</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="2">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="2" data-name="Acer Swift Go 14 AI SFG14-75-5880 Blue">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="3">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=Lenovo+Legion"
-               alt="Lenovo Legion 5" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">Lenovo Legion 5 15IRX10-83L Y00HGTA Black</p>
-            <span class="text-price fw-bold">42,990</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="3">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="3" data-name="Lenovo Legion 5 15IRX10-83L Y00HGTA Black">delete</button>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-6 col-md-3">
-        <article class="product-card card border-0 bg-light rounded-4 p-2 admin-card" data-id="4">
-          <img src="https://placehold.co/300x300/f4f4f5/71717a?text=MSI+Katana"
-               alt="MSI Katana 15" class="product-card-img rounded-3 bg-white"/>
-          <div class="card-body px-1 pb-1 pt-2">
-            <p class="mb-1" style="font-size:.85rem;font-weight:600">MSI Katana 15 HX B14WEK-414TH Black</p>
-            <span class="text-price fw-bold">40,990</span>
-          </div>
-          <div class="d-flex gap-2 justify-content-center pt-2 pb-1">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-edit-trigger" data-id="4">edit</button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-delete-trigger"
-              data-id="4" data-name="MSI Katana 15 HX B14WEK-414TH Black">delete</button>
-          </div>
-        </article>
-      </div>
-
-    </div>
-  </section>
-
+  <div class="row g-3" id="adminProductGrid">
+    <div class="text-center text-muted py-5">Loading inventory...</div>
+  </div>
 </main>
 
 <!-- Delete Confirmation Modal -->

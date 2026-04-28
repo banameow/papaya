@@ -119,29 +119,28 @@ http://localhost:3000
 
 | Page | File | Description |
 |------|------|-------------|
-| **Home** | `index.html` | Landing page with an ADS/Promotion banner, a "What Is Us" section, exclusive product highlights, and a FAQ accordion |
-| **Products** | `products.html` | Full product listing page — shows all sections: Promotions for You, New Coming, and Suggestion — matching the Figma design |
-| **Search** | `search.html` | Search page with 4 filter criteria (Name, Category, Brand, Price range). **Results are hidden until the user clicks Search**, then scroll into view automatically |
-| **Detail** | `detail.html` | Product detail template — shows image gallery, full specifications table, quantity selector, and Add to Cart button. Reads product ID from the `?id=` URL parameter |
-| **Login** | `login.html` | Admin authentication page — split layout with brand panel on the left and login form on the right |
-| **Sign Up** | `sign-up.html` | New user registration form with fields for username, email, phone, address, and password |
-| **Cart** | `cart.html` | Shopping cart showing item list, quantity controls, coupon code input, and order summary with subtotal / discount / total |
-| **Product Management** | `product-management.html` | Admin-only page — lists all products in a grid with **edit** and **delete** buttons per card, and an **+ ADD** button to go to the add form |
-| **Add Product** | `add-product.html` | Admin form to create a new product — fields for name, brand, category, price, stock, description, and image upload |
-| **Edit Product** | `edit-product.html` | Admin form pre-filled with an existing product's data for modification. Product ID is read from the `?id=` URL parameter |
-| **Team** | `team.html` | Team members page — 4 profile cards arranged in two rows (3 + 1), each with avatar, name, student ID, and social links |
-| **Not Found** | `notfound.html` | 404 error page shown when a route does not exist |
+| **Home** | `index.html` | Landing page with a NewsAPI-powered carousel, "What Is Us" section, and an interactive FAQ accordion. |
+| **Products** | `products.html` | Full product listing page dynamically grouped by database categories. |
+| **Search** | `search.html` | Search page with 4 filter criteria (Name, Category, Brand, Price range). Results are fetched dynamically via SQL LIKE and >=/<= parameters. |
+| **Detail** | `detail.html` | Product detail template. Reads product ID from the ?id= URL parameter to fetch specs, real-time stock, and images. |
+| **Login** | `login.html` | Admin authentication page. Sets a 1-hour secure cookie upon successful validation. |
+| **Cart** | `cart.html` | Shopping cart with quantity controls and a dynamic checkout button that validates stock against the database. |
+| **Product Management** | `product-management.html` | Admin-only page. Lists all products in a grid with edit and delete buttons (features Bootstrap confirmation modals). |
+| **Add Product** | `add-product.html` | Admin form to create a new product. Features dynamic specification rows and direct-to-Cloudinary image uploads. |
+| **Edit Product** | `edit-product.html` | Admin form pre-filled with an existing product's data for modification. |
+| **Team** | `team.html` | Team members page featuring profile cards |
+| **Not Found** | `notfound.html` | 404 error page shown when a route does not exist. |
 
 ---
 
-## 🔐 Demo Login
+## 🔐 Admin Login Credentials
 
-> These credentials are for front-end testing only. Phase II will connect to the real authentication web service.
+> Use the following credentials to access the product-management.html dashboard. (These map directly to the seeded database).
 
 | Field | Value |
 |-------|-------|
-| Username | `admin` |
-| Password | `admin123` |
+| Username | `admin0` (or admin1 through admin9) |
+| Password | `admin0pass` (or admin1pass through admin9pass) |
 
 ---
 
@@ -150,24 +149,15 @@ http://localhost:3000
 | Layer | Technology |
 |-------|-----------|
 | Front-end server | Node.js + Express |
-| Back-end web service | Node.js + Express |
+| Back-end web service | Node.js + Express + mysql2 |
 | Dev tool | Nodemon (auto-restart on save) |
-| Database | MySQL (schema in `papaya.sql`) |
+| Database | MySQL (Relational structure with Foreign Keys) |
 | HTML | HTML5 with semantic elements (`<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<footer>`, `<aside>`) |
 | Styling | Bootstrap 5.3 (CDN) + custom `public/style.css` |
-| Icons | Bootstrap Icons 1.11 (CDN) |
-| Fonts | Google Fonts — Outfit + DM Sans |
-| JavaScript | Vanilla JS (`public/script.js`) — shared UI logic, cart, search filtering |
+| State Management | Vanilla JS, localStorage (Cart), document.cookie (Admin Auth) |
+| Image Hosting | Cloudinary API (Direct front-end upload) |
+| External API | NewsAPI (Proxied securely through the backend) |
 
 ---
 
-## 📝 Development Notes
-
-- All planned web service connections are marked with `/* Phase II: ... */` comments in the JS code for easy hookup later.
-- `detail.html` and `edit-product.html` are **templates** — they read `?id=` from the URL and call the product web service.
-- Cart state is temporarily stored in `sessionStorage`; Phase II will replace this with a backend cart API.
-- Demo coupon codes for testing: `PAPAYA10` (฿500 off), `TECH2026` (฿1,000 off)
-
----
-
-*Last updated: March 2026 | ITCS223 Section 1 — Group 14*
+*Last updated: April 2026 | ITCS223 Section 1 — Group 14*
